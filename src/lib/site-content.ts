@@ -1,11 +1,15 @@
 import type { Icon } from "@phosphor-icons/react";
 import {
+  CalendarCheck,
+  CalendarDots,
+  ChartBar,
   EnvelopeSimple,
   InstagramLogo,
   MapPin,
   MaskHappy,
   MicrophoneStage,
   PersonSimpleTaiChi,
+  UsersThree,
   WhatsappLogo,
 } from "@phosphor-icons/react/ssr";
 
@@ -21,7 +25,7 @@ export const site = {
   title: "Mads Project | Escola de Teatro Musical em São Paulo",
   description:
     "Escola de teatro musical para crianças e jovens em São Paulo, com formação em canto, teatro e dança.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://madsmusicalproject.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://madsmusical.com.br",
   logo: withBasePath("/assets/mads-logo.jpeg"),
   heroVideo: withBasePath("/assets/media/hero-stage-loop.mp4"),
   heroPoster: withBasePath("/assets/media/hero-stage-poster.jpg"),
@@ -82,6 +86,31 @@ export const essenceImages = [
     alt: "Aluna atuando em um balanço durante o espetáculo.",
     position: "center",
   },
+  {
+    src: withBasePath("/assets/aprender-fazendo/10-roda-criativa.jpeg"),
+    alt: "Professor conduzindo uma atividade em roda com os alunos do Mads Project.",
+    position: "center",
+  },
+  {
+    src: withBasePath("/assets/aprender-fazendo/11-turma-reunida.jpeg"),
+    alt: "Turma e professores reunidos em um momento descontraído no estúdio.",
+    position: "center",
+  },
+  {
+    src: withBasePath("/assets/aprender-fazendo/12-certificados.jpeg"),
+    alt: "Alunos e professor celebrando a entrega de certificados.",
+    position: "center",
+  },
+  {
+    src: withBasePath("/assets/aprender-fazendo/13-celebracao.jpeg"),
+    alt: "Turma celebrando em conjunto após uma atividade artística.",
+    position: "center",
+  },
+  {
+    src: withBasePath("/assets/aprender-fazendo/14-processo-em-roda.jpeg"),
+    alt: "Professor e estudantes conversando em roda durante uma aula.",
+    position: "center",
+  },
 ] as const;
 
 export const navLinks: Array<{
@@ -99,7 +128,6 @@ export const navLinks: Array<{
 
 export const courses = [
   {
-    number: "01",
     title: "Canto",
     icon: MicrophoneStage,
     eyebrow: "Voz, repertório e interpretação",
@@ -109,7 +137,6 @@ export const courses = [
     outcomes: ["Respiração e afinação", "Interpretação musical", "Confiança para se apresentar"],
   },
   {
-    number: "02",
     title: "Teatro",
     icon: MaskHappy,
     eyebrow: "Cena, criatividade e comunicação",
@@ -119,7 +146,6 @@ export const courses = [
     outcomes: ["Expressão corporal", "Trabalho em equipe", "Autonomia em cena"],
   },
   {
-    number: "03",
     title: "Dança",
     icon: PersonSimpleTaiChi,
     eyebrow: "Movimento, ritmo e musicalidade",
@@ -132,6 +158,41 @@ export const courses = [
 
 export const coursePrograms = [
   {
+    id: "teatro-musical",
+    title: "Teatro Musical",
+    eyebrow: "Interpretação, canto e dança",
+    icon: MaskHappy,
+    summary:
+      "Uma formação artística completa, dinâmica e acolhedora, na qual cada aluno vivencia todas as etapas da construção de um espetáculo musical.",
+    paragraphs: [
+      "Com duração de fevereiro a dezembro, o curso culmina em uma grande apresentação no final do ano, quando os alunos colocam em prática tudo o que desenvolveram. As matrículas para novas turmas acontecem no mês de janeiro.",
+      "Ao longo das aulas, são trabalhadas interpretação, expressão corporal, preparação vocal, musicalidade, consciência corporal e montagem de cenas, respeitando a faixa etária e o nível de cada turma. Além do desenvolvimento técnico, os alunos fortalecem criatividade, comunicação, disciplina, trabalho em equipe e autoconfiança.",
+      "Os estudantes também participam de workshops e bate-papos com artistas e profissionais do teatro musical, ampliando seu contato com o mercado e conhecendo diferentes trajetórias dentro da área artística.",
+      "O curso inclui vivências em figurino, maquiagem e cenografia, permitindo que os alunos compreendam o processo criativo dos bastidores e valorizem cada profissional envolvido na realização de um musical.",
+      "Mais do que formar artistas, o curso desenvolve indivíduos criativos, confiantes e capazes de se expressar com liberdade, sensibilidade e segurança, valorizando a individualidade de cada aluno.",
+    ],
+    tags: ["Interpretação", "Canto", "Dança", "Figurino", "Maquiagem", "Cenografia"],
+    facts: [
+      { label: "Fevereiro a dezembro", icon: CalendarDots },
+      { label: "Matrículas em janeiro", icon: CalendarCheck },
+    ],
+    media: {
+      src: withBasePath("/assets/cursos/teatro-musical.mp4"),
+      poster: withBasePath("/assets/cursos/teatro-musical-poster.jpg"),
+      label: "Trecho de uma aula de Teatro Musical",
+      orientation: "portrait",
+    },
+    objectives: [
+      "Desenvolver habilidades em interpretação, canto e dança",
+      "Aprimorar expressão corporal, vocal e artística",
+      "Estimular criatividade, imaginação e comunicação",
+      "Fortalecer autoconfiança, disciplina e trabalho em equipe",
+      "Desenvolver presença de palco e interpretação cênica",
+      "Vivenciar todas as etapas da criação de um espetáculo musical",
+      "Preparar os alunos para apresentações e produções artísticas",
+    ],
+  },
+  {
     id: "street-dance",
     title: "Street Dance",
     eyebrow: "Ritmo, identidade e movimento",
@@ -143,7 +204,16 @@ export const coursePrograms = [
       "Além da técnica, os alunos são incentivados a desenvolver criatividade, improvisação, confiança e presença de palco por meio de exercícios, dinâmicas e montagens coreográficas. O trabalho também estimula disciplina, trabalho em equipe, respeito e autonomia, proporcionando uma formação artística completa em um ambiente acolhedor e motivador.",
     ],
     tags: ["Hip Hop", "House", "Locking", "Popping", "Freestyle"],
-    facts: ["Diferentes níveis", "Turmas por faixa etária"],
+    facts: [
+      { label: "Diferentes níveis", icon: ChartBar },
+      { label: "Turmas por faixa etária", icon: UsersThree },
+    ],
+    media: {
+      src: withBasePath("/assets/cursos/street-dance.mp4"),
+      poster: withBasePath("/assets/cursos/street-dance-poster-v2.jpg"),
+      label: "Trecho de uma aula de Street Dance",
+      orientation: "landscape",
+    },
     objectives: [
       "Desenvolver coordenação motora e consciência corporal",
       "Aprimorar ritmo e musicalidade",
@@ -165,7 +235,16 @@ export const coursePrograms = [
       "Além do aprendizado das coreografias, o curso incentiva o desenvolvimento da interpretação, da postura artística e da conexão com o público, proporcionando uma experiência completa e divertida para alunos de diferentes níveis.",
     ],
     tags: ["Coreografia", "Performance", "Musicalidade", "Expressão"],
-    facts: ["Diferentes níveis", "Performance em grupo"],
+    facts: [
+      { label: "Diferentes níveis", icon: ChartBar },
+      { label: "Performance em grupo", icon: UsersThree },
+    ],
+    media: {
+      src: withBasePath("/assets/cursos/kpop.mp4"),
+      poster: withBasePath("/assets/cursos/kpop-poster-v2.jpg"),
+      label: "Trecho de uma aula de K-pop",
+      orientation: "portrait",
+    },
     objectives: [
       "Desenvolver coordenação motora e consciência corporal",
       "Aprimorar ritmo, musicalidade e precisão dos movimentos",
@@ -173,32 +252,6 @@ export const coursePrograms = [
       "Estimular disciplina, concentração e trabalho em equipe",
       "Desenvolver confiança e performance artística",
       "Preparar os alunos para apresentações e espetáculos",
-    ],
-  },
-  {
-    id: "teatro-musical",
-    title: "Teatro Musical",
-    eyebrow: "Interpretação, canto e dança",
-    icon: MaskHappy,
-    summary:
-      "Uma formação artística completa, dinâmica e acolhedora, na qual cada aluno vivencia todas as etapas da construção de um espetáculo musical.",
-    paragraphs: [
-      "Com duração de fevereiro a dezembro, o curso culmina em uma grande apresentação no final do ano, quando os alunos colocam em prática tudo o que desenvolveram. As matrículas para novas turmas acontecem no mês de janeiro.",
-      "Ao longo das aulas, são trabalhadas interpretação, expressão corporal, preparação vocal, musicalidade, consciência corporal e montagem de cenas, respeitando a faixa etária e o nível de cada turma. Além do desenvolvimento técnico, os alunos fortalecem criatividade, comunicação, disciplina, trabalho em equipe e autoconfiança.",
-      "Os estudantes também participam de workshops e bate-papos com artistas e profissionais do teatro musical, ampliando seu contato com o mercado e conhecendo diferentes trajetórias dentro da área artística.",
-      "O curso inclui vivências em figurino, maquiagem e cenografia, permitindo que os alunos compreendam o processo criativo dos bastidores e valorizem cada profissional envolvido na realização de um musical.",
-      "Mais do que formar artistas, o curso desenvolve indivíduos criativos, confiantes e capazes de se expressar com liberdade, sensibilidade e segurança, valorizando a individualidade de cada aluno.",
-    ],
-    tags: ["Interpretação", "Canto", "Dança", "Figurino", "Maquiagem", "Cenografia"],
-    facts: ["Fevereiro a dezembro", "Matrículas em janeiro"],
-    objectives: [
-      "Desenvolver habilidades em interpretação, canto e dança",
-      "Aprimorar expressão corporal, vocal e artística",
-      "Estimular criatividade, imaginação e comunicação",
-      "Fortalecer autoconfiança, disciplina e trabalho em equipe",
-      "Desenvolver presença de palco e interpretação cênica",
-      "Vivenciar todas as etapas da criação de um espetáculo musical",
-      "Preparar os alunos para apresentações e produções artísticas",
     ],
   },
 ] as const;
@@ -313,7 +366,7 @@ export const teacherProfiles = [
     role: "Professor de teatro",
     image: withBasePath("/assets/professores/victor-lazzari.jpeg"),
     imagePosition: "center 28%",
-    specialties: ["Teatro", "Teatro musical", "Formação artística"],
+    specialties: ["Teatro", "Teatro musical", "Corpo"],
     bio: [
       "Profissional das artes cênicas, com experiência em teatro, teatro musical, dança e formação artística. Atua na preparação e no desenvolvimento de crianças, adolescentes e adultos, promovendo o aprendizado por meio de uma metodologia que une técnica, criatividade, disciplina e sensibilidade.",
       "Ao longo de sua trajetória, participou de projetos artísticos, educacionais e culturais, desenvolvendo processos criativos que estimulam a expressão, a comunicação, a confiança e o trabalho em equipe. Acredita que a arte é uma importante ferramenta de transformação, capaz de fortalecer habilidades técnicas, emocionais e sociais, respeitando a individualidade e o potencial de cada aluno.",

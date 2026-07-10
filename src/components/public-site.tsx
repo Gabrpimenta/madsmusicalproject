@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   AnimatePresence,
   motion,
@@ -79,13 +80,13 @@ function GradientButton({
   children: React.ReactNode;
 }) {
   return (
-    <a
+    <Link
       href={href}
-      className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white transition"
+      className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-white transition sm:px-7 sm:tracking-[0.16em]"
     >
       {children}
       <ArrowRight size={17} weight="bold" aria-hidden="true" />
-    </a>
+    </Link>
   );
 }
 
@@ -180,9 +181,18 @@ function EssenceCarousel({ reduceMotion }: { reduceMotion: boolean }) {
         >
           <Image
             src={activeImage.src}
+            alt=""
+            fill
+            className="scale-110 object-cover opacity-45 blur-xl"
+            style={{ objectPosition: activeImage.position }}
+            sizes="(min-width: 1024px) 48vw, 100vw"
+            aria-hidden="true"
+          />
+          <Image
+            src={activeImage.src}
             alt={activeImage.alt}
             fill
-            className="object-cover"
+            className="object-contain"
             style={{ objectPosition: activeImage.position }}
             sizes="(min-width: 1024px) 48vw, 100vw"
             priority={activeIndex === 0}
@@ -324,23 +334,27 @@ export function PublicSite() {
           </a>
 
           <div className="hidden items-center gap-7 xl:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-                className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted transition hover:text-mads-text"
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="/portal/"
-              className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-text/85 transition hover:text-mads-accent"
-            >
-              Portal do Aluno
-            </a>
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted transition hover:text-mads-text"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted transition hover:text-mads-text"
+                >
+                  {link.label}
+                </Link>
+              ),
+            )}
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
@@ -381,22 +395,27 @@ export function PublicSite() {
         {navOpen ? (
           <div className="mx-5 mb-4 rounded-2xl border border-mads-border bg-mads-panel p-4 shadow-2xl xl:hidden">
             <div className="grid gap-2">
-              {[...navLinks, { label: "Portal do Aluno", href: "/portal/" }].map(
-                (link) => (
+              {navLinks.map((link) =>
+                link.external ? (
                   <a
                     key={link.label}
                     href={link.href}
-                    target={"external" in link && link.external ? "_blank" : undefined}
-                    rel={
-                      "external" in link && link.external
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setNavOpen(false)}
                     className="rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.14em] text-mads-muted hover:bg-mads-surface hover:text-mads-text"
                   >
                     {link.label}
                   </a>
+                ) : (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setNavOpen(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.14em] text-mads-muted hover:bg-mads-surface hover:text-mads-text"
+                  >
+                    {link.label}
+                  </Link>
                 ),
               )}
             </div>
@@ -409,14 +428,14 @@ export function PublicSite() {
         className="relative flex min-h-[100svh] items-center overflow-hidden"
       >
         <HeroVideo reduceMotion={reduceMotion} />
-        <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 pb-24 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
+        <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 pb-20 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
           <motion.div
             {...reveal}
-            className="mb-5 max-w-full text-[11px] font-bold uppercase tracking-[0.18em] text-mads-accent-soft sm:text-[13px] sm:tracking-[0.3em]"
+            className="mb-4 max-w-full text-[10px] font-bold uppercase tracking-[0.16em] text-mads-accent-soft sm:mb-5 sm:text-[13px] sm:tracking-[0.3em]"
           >
             <span className="min-w-0">Escola de Teatro Musical</span>
           </motion.div>
-          <h1 className="max-w-[1420px] font-serif text-[42px] font-bold leading-[.92] tracking-normal text-white sm:text-[62px] md:text-[78px] lg:text-[96px] xl:text-[112px] 2xl:text-[118px]">
+          <h1 className="max-w-[1420px] font-serif text-[39px] font-bold leading-[.94] tracking-normal text-white min-[390px]:text-[44px] sm:text-[62px] md:text-[78px] lg:text-[96px] xl:text-[112px] 2xl:text-[118px]">
             <motion.span {...reveal} className="block">
               Desenvolvendo artistas.
             </motion.span>
@@ -431,7 +450,7 @@ export function PublicSite() {
           <motion.p
             {...reveal}
             transition={{ ...reveal.transition, delay: 0.22 }}
-            className="mt-6 max-w-2xl text-lg font-light leading-8 text-white/78 sm:text-xl"
+            className="mt-6 hidden max-w-2xl text-lg font-light leading-8 text-white/78 sm:block sm:text-xl"
           >
             No Mads Project, crianças e jovens descobrem o poder da arte
             cantando, dançando e atuando com alegria, técnica e presença.
@@ -439,15 +458,15 @@ export function PublicSite() {
           <motion.div
             {...reveal}
             transition={{ ...reveal.transition, delay: 0.32 }}
-            className="mt-8 flex flex-wrap gap-4"
+            className="mt-8 flex max-w-[340px] flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4"
           >
             <GradientButton href="#contato">Quero me matricular</GradientButton>
-            <a
+            <Link
               href={site.coursesUrl}
-              className="hero-secondary-cta inline-flex items-center justify-center rounded-xl border px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] transition"
+              className="hero-secondary-cta inline-flex items-center justify-center rounded-xl border px-6 py-4 text-center text-[13px] font-bold uppercase tracking-[0.14em] transition sm:px-7 sm:tracking-[0.16em]"
             >
               Ver os cursos
-            </a>
+            </Link>
           </motion.div>
         </div>
         <a
@@ -461,12 +480,12 @@ export function PublicSite() {
 
       <section
         id="escola"
-        className="mx-auto grid max-w-[1500px] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2 lg:gap-20 lg:px-11 lg:py-32"
+        className="anchor-section mx-auto grid max-w-[1500px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-11 lg:py-20"
       >
-        <motion.div {...reveal} className="relative">
+        <motion.div {...reveal} className="relative order-2 lg:order-1">
           <EssenceCarousel reduceMotion={reduceMotion} />
         </motion.div>
-        <div>
+        <div className="order-1 lg:order-2">
           <motion.p
             {...reveal}
             className="mb-5 text-[13px] font-bold uppercase tracking-[0.3em] text-mads-accent-soft"
@@ -475,7 +494,7 @@ export function PublicSite() {
           </motion.p>
           <motion.h2
             {...reveal}
-            className="font-serif text-[clamp(36px,4.6vw,60px)] font-semibold leading-[1.08]"
+            className="font-serif text-[34px] font-semibold leading-[1.08] sm:text-[clamp(36px,4.6vw,60px)]"
           >
             Arte que desperta
             <br />
@@ -485,7 +504,7 @@ export function PublicSite() {
           </motion.h2>
           <motion.div
             {...reveal}
-            className="mt-7 flex max-w-xl flex-col gap-5 text-[17px] font-light leading-8 text-mads-muted"
+            className="mt-6 flex max-w-xl flex-col gap-4 text-[16px] font-light leading-7 text-mads-muted sm:mt-7 sm:gap-5 sm:text-[17px] sm:leading-8"
           >
             {initialSchoolCopy.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -521,9 +540,9 @@ export function PublicSite() {
 
       <section
         id="cursos"
-        className="mx-auto max-w-[1500px] px-5 py-24 sm:px-8 lg:px-11 lg:py-32"
+        className="anchor-section mx-auto max-w-[1500px] px-5 py-20 sm:px-8 lg:px-11 lg:py-20"
       >
-        <div className="mb-14 grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+        <div className="mb-10 grid gap-7 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
           <div>
             <motion.p
               {...reveal}
@@ -535,7 +554,7 @@ export function PublicSite() {
               {...reveal}
               className="font-serif text-[clamp(38px,5vw,68px)] font-semibold leading-tight"
             >
-              Teatro <span className="italic">Musical</span>
+              Teatro Musical
             </motion.h2>
           </div>
           <motion.p
@@ -560,10 +579,7 @@ export function PublicSite() {
                 <div className="course-card-accent absolute inset-x-0 top-0 h-1 opacity-80" />
                 <div className="flex items-start justify-between gap-5">
                   <div>
-                    <span className="text-[12px] font-bold uppercase tracking-[0.22em] text-mads-accent-soft">
-                      {course.number}
-                    </span>
-                    <h3 className="mt-4 font-serif text-4xl font-semibold text-mads-text">
+                    <h3 className="font-serif text-4xl font-semibold text-mads-text">
                       {course.title}
                     </h3>
                     <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-mads-faint">
@@ -581,7 +597,7 @@ export function PublicSite() {
                   {course.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
+                      className="mads-pill rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
                     >
                       {tag}
                     </span>
@@ -599,14 +615,14 @@ export function PublicSite() {
             );
           })}
         </div>
-        <motion.div {...reveal} className="mt-12 flex justify-center">
+        <motion.div {...reveal} className="mt-10 flex justify-center">
           <GradientButton href={site.coursesUrl}>Ver todos os cursos</GradientButton>
         </motion.div>
       </section>
 
       <section
         id="orientadora"
-        className="mx-auto grid max-w-[1500px] items-center gap-14 px-5 py-24 sm:px-8 lg:grid-cols-[1fr_.82fr] lg:gap-20 lg:px-11 lg:py-32"
+        className="anchor-section mx-auto grid max-w-[1500px] items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1fr_.82fr] lg:gap-16 lg:px-11 lg:py-20"
       >
         <motion.div {...reveal}>
           <p className="mb-4 text-[13px] font-bold uppercase tracking-[0.3em] text-mads-accent-soft">
@@ -643,7 +659,7 @@ export function PublicSite() {
 
       <section
         id="contato"
-        className="mx-auto grid max-w-[1500px] gap-14 px-5 py-24 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-20 lg:px-11 lg:py-32"
+        className="anchor-section mx-auto grid max-w-[1500px] gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:px-11 lg:py-20"
       >
         <motion.div {...reveal}>
           <p className="mb-5 text-[13px] font-bold uppercase tracking-[0.3em] text-mads-accent-soft">
@@ -815,7 +831,7 @@ export function PublicSite() {
               type="submit"
               className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl border-0 px-7 py-5 text-sm font-bold uppercase tracking-[0.16em] text-white transition"
             >
-              Enviar matrícula <ArrowRight size={17} weight="bold" aria-hidden="true" />
+              Enviar <ArrowRight size={17} weight="bold" aria-hidden="true" />
             </button>
             {fallbackUrl ? (
               <p className="text-sm leading-6 text-mads-muted">
@@ -846,29 +862,33 @@ export function PublicSite() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-2xl font-medium leading-snug md:text-[26px]">
+              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>
             <div className="flex flex-col gap-6 md:items-end">
               <div className="flex flex-wrap gap-6 md:justify-end">
-                {navLinks.slice(0, 5).map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-                <a
-                  href="/portal/"
-                  className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
-                >
-                  Portal do Aluno
-                </a>
+                {navLinks.slice(0, 5).map((link) =>
+                  link.external ? (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
+                    >
+                      {link.label}
+                    </Link>
+                  ),
+                )}
               </div>
               <a
                 href={site.instagram}

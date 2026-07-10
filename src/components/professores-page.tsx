@@ -137,12 +137,6 @@ export function ProfessoresPage() {
                 </Link>
               ),
             )}
-            <Link
-              href="/portal/"
-              className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-text/85 transition hover:text-mads-accent"
-            >
-              Portal do Aluno
-            </Link>
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
@@ -177,8 +171,7 @@ export function ProfessoresPage() {
         {navOpen ? (
           <div className="mx-5 mb-4 rounded-2xl border border-mads-border bg-mads-panel p-4 shadow-2xl xl:hidden">
             <div className="grid gap-2">
-              {[...navLinks, { label: "Portal do Aluno", href: "/portal/" }].map(
-                (link) =>
+              {navLinks.map((link) =>
                   "external" in link && link.external ? (
                     <a
                       key={link.label}
@@ -298,7 +291,7 @@ export function ProfessoresPage() {
                   {teacher.specialties.map((specialty) => (
                     <span
                       key={specialty}
-                      className="rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
+                      className="mads-pill rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
                     >
                       {specialty}
                     </span>
@@ -345,7 +338,7 @@ export function ProfessoresPage() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-2xl font-medium leading-snug md:text-[26px]">
+              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>
@@ -372,12 +365,6 @@ export function ProfessoresPage() {
                     </Link>
                   ),
                 )}
-                <Link
-                  href="/portal/"
-                  className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
-                >
-                  Portal do Aluno
-                </Link>
               </div>
               <a
                 href={site.instagram}

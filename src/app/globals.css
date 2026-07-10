@@ -104,16 +104,16 @@ textarea {
   --mads-text: #20172a;
   --mads-muted: rgba(32, 23, 42, 0.72);
   --mads-faint: rgba(32, 23, 42, 0.5);
-  --mads-accent: #6d36e6;
-  --mads-accent-soft: #6d36e6;
-  --mads-pink: #6d36e6;
-  --mads-violet: #5a2fca;
-  --mads-border: rgba(109, 54, 230, 0.18);
+  --mads-accent: #a840c9;
+  --mads-accent-soft: #a840c9;
+  --mads-pink: #bf58dd;
+  --mads-violet: #7b2ca0;
+  --mads-border: rgba(168, 64, 201, 0.22);
   --mads-surface: rgba(255, 255, 255, 0.82);
   --mads-panel: rgba(255, 255, 255, 0.92);
   --mads-nav-bg: rgba(251, 247, 239, 0.94);
-  --mads-gradient: #6d36e6;
-  --mads-headline: #5a2fca;
+  --mads-gradient: linear-gradient(100deg, #a840c9, #d86bff);
+  --mads-headline: linear-gradient(100deg, #7b2ca0, #a840c9 58%, #d86bff);
   color-scheme: light;
 }
 
@@ -139,9 +139,10 @@ textarea {
 }
 
 .public-site[data-theme="light"] .mads-gradient-text {
-  background: none;
-  color: var(--mads-accent);
-  -webkit-text-fill-color: currentColor;
+  background: var(--mads-headline);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .mads-cta {
@@ -173,15 +174,41 @@ textarea {
 .public-site[data-theme="light"] .mads-cta {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-    0 0 14px rgba(109, 54, 230, 0.16),
-    0 0 28px rgba(109, 54, 230, 0.12);
+    0 0 14px rgba(168, 64, 201, 0.16),
+    0 0 28px rgba(168, 64, 201, 0.12);
 }
 
 .public-site[data-theme="light"] .mads-cta:hover {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.22),
-    0 0 18px rgba(109, 54, 230, 0.22),
-    0 0 38px rgba(109, 54, 230, 0.18);
+    0 0 18px rgba(168, 64, 201, 0.22),
+    0 0 38px rgba(168, 64, 201, 0.18);
+}
+
+.anchor-section {
+  min-height: calc(100svh - 96px);
+  scroll-margin-top: 96px;
+}
+
+.mads-pill {
+  box-shadow: inset 0 0 0 0 var(--mads-accent);
+  transform: translateY(0);
+}
+
+.mads-pill:hover {
+  border-color: var(--mads-accent);
+  color: var(--mads-text);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mads-accent) 22%, transparent),
+    0 7px 18px color-mix(in srgb, var(--mads-accent) 16%, transparent);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1023px) {
+  .anchor-section {
+    min-height: auto;
+    scroll-margin-top: 80px;
+  }
 }
 
 .public-site {

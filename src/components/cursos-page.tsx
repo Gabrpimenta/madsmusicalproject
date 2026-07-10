@@ -20,6 +20,13 @@ import { coursePrograms, navLinks, site } from "@/lib/site-content";
 
 type ThemeMode = "dark" | "light";
 
+type CourseMedia = {
+  src: string;
+  poster: string;
+  label: string;
+  orientation: "portrait" | "landscape";
+};
+
 const madsEase = [0.2, 0.7, 0.2, 1] as const;
 
 const reveal = {
@@ -60,6 +67,31 @@ function ThemeToggle({
         <Moon size={17} weight="bold" />
       )}
     </button>
+  );
+}
+
+function CourseMediaShowcase({ media }: { media: CourseMedia }) {
+  return (
+    <motion.div
+      {...reveal}
+      className="mx-auto mt-12 w-full max-w-[1180px] border-t border-mads-border pt-8 sm:mt-16 sm:pt-10"
+    >
+      <p className="mb-5 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-mads-accent">
+        Vivência em aula
+      </p>
+      <div className="course-media-frame relative mx-auto aspect-video w-full overflow-hidden rounded-lg border border-mads-border bg-[#09070b] shadow-[0_24px_80px_rgba(0,0,0,.34)]">
+        <video
+          controls
+          playsInline
+          preload="metadata"
+          poster={media.poster}
+          className="h-full w-full object-contain"
+          aria-label={media.label}
+        >
+          <source src={media.src} type="video/mp4" />
+        </video>
+      </div>
+    </motion.div>
   );
 }
 
@@ -146,12 +178,6 @@ export function CursosPage() {
                 </Link>
               ),
             )}
-            <Link
-              href="/portal/"
-              className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-text/85 transition hover:text-mads-accent"
-            >
-              Portal do Aluno
-            </Link>
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
@@ -186,8 +212,7 @@ export function CursosPage() {
         {navOpen ? (
           <div className="mx-5 mb-4 rounded-2xl border border-mads-border bg-mads-panel p-4 shadow-2xl xl:hidden">
             <div className="grid gap-2">
-              {[...navLinks, { label: "Portal do Aluno", href: "/portal/" }].map(
-                (link) => (
+              {navLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
@@ -196,8 +221,7 @@ export function CursosPage() {
                   >
                     {link.label}
                   </Link>
-                ),
-              )}
+                ))}
               <button
                 type="button"
                 onClick={() => {
@@ -220,7 +244,7 @@ export function CursosPage() {
 
       <section
         ref={heroRef}
-        className="relative isolate flex min-h-[78svh] items-end overflow-hidden px-5 pb-16 pt-36 text-white sm:px-8 lg:px-11 lg:pb-24"
+        className="relative isolate flex min-h-[100svh] items-end overflow-hidden px-5 pb-16 pt-36 text-white sm:px-8 lg:px-11 lg:pb-24"
       >
         <Image
           src={site.heroPoster}
@@ -239,9 +263,9 @@ export function CursosPage() {
           >
             Formação Mads
           </motion.p>
-          <motion.h1
+        <motion.h1
             {...reveal}
-            className="mt-5 max-w-[1280px] text-balance font-serif text-[44px] font-semibold leading-[1.02] sm:text-[58px] lg:text-[72px] xl:text-[80px]"
+            className="mt-5 max-w-[1280px] text-balance font-serif text-[40px] font-semibold leading-[1.02] min-[390px]:text-[46px] sm:text-[58px] lg:text-[72px] xl:text-[80px]"
           >
             <span className="block">Cursos para criar,</span>
             <span className="block italic text-[#d8b7ff]">
@@ -250,22 +274,22 @@ export function CursosPage() {
           </motion.h1>
           <motion.p
             {...reveal}
-            className="mt-7 max-w-2xl text-lg font-light leading-8 text-white/78 sm:text-xl"
+            className="mt-6 max-w-2xl text-base font-light leading-7 text-white/78 sm:mt-7 sm:text-xl sm:leading-8"
           >
-            Street Dance, K-pop e Teatro Musical em processos que unem técnica,
+            Teatro Musical, Street Dance e K-pop em processos que unem técnica,
             acolhimento e experiências reais de palco.
           </motion.p>
-          <motion.div {...reveal} className="mt-9 flex flex-wrap gap-4">
+          <motion.div {...reveal} className="mt-8 flex max-w-[340px] flex-col gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4">
             <a
               href="#escolha"
-              className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white"
+              className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-white sm:px-7 sm:tracking-[0.16em]"
             >
               Explorar os cursos
               <ArrowRight size={17} weight="bold" aria-hidden="true" />
             </a>
             <Link
               href="/#contato"
-              className="inline-flex items-center justify-center rounded-xl border border-white/35 bg-black/20 px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white transition hover:border-white/70"
+              className="inline-flex items-center justify-center rounded-xl border border-white/35 bg-black/20 px-6 py-4 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-white transition hover:border-white/70 sm:px-7 sm:tracking-[0.16em]"
             >
               Falar com a equipe
             </Link>
@@ -337,60 +361,74 @@ export function CursosPage() {
                 index % 2 === 0 ? "bg-mads-surface" : "bg-mads-bg"
               }`}
             >
-              <div className="mx-auto grid max-w-[1500px] gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-20 lg:px-11 lg:py-32">
-                <motion.div {...reveal}>
-                  <div className="flex items-center gap-4">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-lg border border-mads-border bg-mads-panel text-mads-accent">
-                      <Icon size={28} weight="duotone" aria-hidden="true" />
-                    </span>
-                    <p className="text-sm font-bold uppercase tracking-[0.16em] text-mads-accent">
-                      {course.eyebrow}
-                    </p>
-                  </div>
-                  <h2 className="mt-8 font-serif text-[44px] font-semibold leading-none sm:text-[60px]">
-                    {course.title}
-                  </h2>
-                  <p className="mt-7 max-w-3xl font-serif text-2xl font-medium leading-9 text-mads-text/90">
-                    {course.summary}
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-2">
-                    {course.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-mads-border bg-mads-panel px-3 py-1.5 text-xs font-bold text-mads-muted"
-                      >
-                        {tag}
+              <div className="mx-auto max-w-[1500px] px-5 py-24 sm:px-8 lg:px-11 lg:py-32">
+                <div className="grid gap-12 lg:grid-cols-[1.08fr_.72fr] lg:gap-20">
+                  <motion.div {...reveal}>
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-lg border border-mads-border bg-mads-panel text-mads-accent">
+                        <Icon size={28} weight="duotone" aria-hidden="true" />
                       </span>
-                    ))}
-                  </div>
+                      <p className="text-sm font-bold uppercase tracking-[0.16em] text-mads-accent">
+                        {course.eyebrow}
+                      </p>
+                    </div>
+                    <h2 className="mt-8 font-serif text-[44px] font-semibold leading-none sm:text-[60px]">
+                      {course.title}
+                    </h2>
+                    <p className="mt-7 max-w-3xl font-serif text-2xl font-medium leading-9 text-mads-text/90">
+                      {course.summary}
+                    </p>
 
-                  <div className="mt-9 grid gap-5 text-[17px] font-light leading-8 text-mads-muted">
-                    {course.paragraphs.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                </motion.div>
+                    <div className="mt-8 flex flex-wrap gap-2">
+                      {course.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="mads-pill rounded-full border border-mads-border bg-mads-panel px-3 py-1.5 text-xs font-bold text-mads-muted"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-9 grid gap-5 text-[17px] font-light leading-8 text-mads-muted">
+                      {course.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                  </motion.div>
 
                 <motion.aside {...reveal} className="lg:pt-4">
                   <div className="rounded-lg border border-mads-border bg-mads-panel p-6 shadow-[0_20px_70px_rgba(0,0,0,.12)] sm:p-8">
                     <div className="grid gap-3 sm:grid-cols-2">
-                      {course.facts.map((fact) => (
-                        <div
-                          key={fact}
-                          className="flex min-h-20 items-center gap-3 border-b border-mads-border pb-3 sm:min-h-0"
-                        >
-                          <CalendarDots size={20} weight="duotone" className="shrink-0 text-mads-accent" aria-hidden="true" />
-                          <span className="text-sm font-semibold text-mads-text">{fact}</span>
-                        </div>
-                      ))}
+                      {course.facts.map((fact) => {
+                        const FactIcon = fact.icon;
+                        return (
+                          <div
+                            key={fact.label}
+                            className="flex min-h-20 items-center gap-3 border-b border-mads-border pb-3 sm:min-h-0"
+                          >
+                            <FactIcon
+                              size={20}
+                              weight="duotone"
+                              className="shrink-0 text-mads-accent"
+                              aria-hidden="true"
+                            />
+                            <span className="text-sm font-semibold text-mads-text">
+                              {fact.label}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                     <h3 className="mt-8 font-serif text-2xl font-semibold">
                       O que este curso desenvolve
                     </h3>
                     <ul className="mt-6 grid gap-4">
                       {course.objectives.map((objective) => (
-                        <li key={objective} className="flex gap-3 text-[15px] leading-6 text-mads-muted">
+                        <li
+                          key={objective}
+                          className="flex gap-3 text-[15px] leading-6 text-mads-muted"
+                        >
                           <CheckCircle
                             size={20}
                             weight="fill"
@@ -410,6 +448,8 @@ export function CursosPage() {
                     </Link>
                   </div>
                 </motion.aside>
+                </div>
+                <CourseMediaShowcase media={course.media} />
               </div>
             </article>
           );
@@ -460,7 +500,7 @@ export function CursosPage() {
         <motion.div {...reveal} className="mt-12 flex justify-center">
           <Link
             href="/#contato"
-            className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-8 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white"
+            className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 text-center text-[13px] font-bold uppercase tracking-[0.14em] text-white sm:px-8 sm:tracking-[0.16em]"
           >
             Encontrar a turma certa
             <ArrowRight size={17} weight="bold" aria-hidden="true" />
@@ -479,7 +519,7 @@ export function CursosPage() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-2xl font-medium leading-snug md:text-[26px]">
+              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>
@@ -494,12 +534,6 @@ export function CursosPage() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
-                  href="/portal/"
-                  className="text-[12px] font-bold uppercase tracking-[0.18em] text-mads-muted hover:text-mads-text"
-                >
-                  Portal do Aluno
-                </Link>
               </div>
               <a
                 href={site.instagram}

@@ -1,0 +1,43 @@
+MADS PROJECT - PACOTE DO SITE
+
+CONTEUDO
+  A pasta "site" contem a versao final estatica do website.
+  Ela inclui as paginas Inicio, Cursos, Professores e Portal do Aluno,
+  alem de imagens, video, animacoes, tema claro/escuro e formularios.
+
+COMO VISUALIZAR LOCALMENTE
+  O site precisa ser aberto por um servidor local. Nao abra index.html
+  diretamente, pois links, fontes e rotas podem nao funcionar corretamente.
+
+  macOS ou Linux:
+    1. Abra o Terminal dentro da pasta "site".
+    2. Execute: python3 -m http.server 8080
+    3. Acesse: http://localhost:8080
+
+  Windows:
+    1. Abra o Prompt de Comando dentro da pasta "site".
+    2. Execute: py -m http.server 8080
+    3. Acesse: http://localhost:8080
+
+PUBLICACAO NO HOSTGATOR
+  1. Acesse o Gerenciador de Arquivos do cPanel.
+  2. Abra public_html ou a raiz configurada para o dominio.
+  3. Envie TODO o conteudo de dentro da pasta "site".
+  4. Nao envie a pasta "site" como uma subpasta, a menos que o website
+     deva ficar em um endereco como dominio.com/site/.
+  5. Confirme que index.html e a pasta _next estao na raiz publicada.
+
+PORTAL DO ALUNO
+  O frontend do portal esta incluido. Para ativar login, convites, uploads
+  e downloads, o projeto deve ser compilado com estas configuracoes:
+
+    NEXT_PUBLIC_SUPABASE_URL
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+  As politicas, tabelas e funcoes do Supabase tambem precisam ser implantadas
+  conforme a documentacao do repositorio-fonte.
+
+OBSERVACOES
+  - Mantenha o JavaScript habilitado para animacoes e interacoes.
+  - O video principal esta em Full HD e pode levar alguns segundos em redes lentas.
+  - Recomendado: Chrome, Edge, Firefox ou Safari atualizados.

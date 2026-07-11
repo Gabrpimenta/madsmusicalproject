@@ -20,7 +20,6 @@ import {
   X,
 } from "@phosphor-icons/react";
 import {
-  ageRanges,
   contactItems,
   courses,
   essenceImages,
@@ -40,6 +39,7 @@ import {
 type ThemeMode = "dark" | "light";
 
 const madsEase = [0.2, 0.7, 0.2, 1] as const;
+const fixedAgeRange = "6 - 18 anos";
 
 const reveal = {
   initial: { opacity: 0, y: 28 },
@@ -53,7 +53,7 @@ const emptyForm: EnrollmentForm = {
   email: "",
   phone: "",
   studentName: "",
-  ageRange: "",
+  ageRange: fixedAgeRange,
   course: "",
   message: "",
 };
@@ -780,21 +780,16 @@ export function PublicSite() {
                 <label className="mads-label" htmlFor="ageRange">
                   Faixa etária
                 </label>
-                <select
+                <input
                   className="mads-field"
                   id="ageRange"
+                  readOnly
                   value={values.ageRange}
-                  onChange={(event) =>
-                    updateField("ageRange", event.target.value)
-                  }
-                >
-                  <option value="">Selecione</option>
-                  {ageRanges.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
+                  aria-describedby="ageRangeHint"
+                />
+                <p id="ageRangeHint" className="mt-2 text-xs text-mads-faint">
+                  Turmas para crianças e jovens nessa faixa.
+                </p>
               </div>
               <div>
                 <label className="mads-label" htmlFor="course">

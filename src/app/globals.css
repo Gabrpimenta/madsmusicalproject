@@ -241,6 +241,10 @@ textarea {
     background 180ms ease;
 }
 
+.mads-field:is(select) {
+  padding-right: 48px;
+}
+
 .mads-field::placeholder {
   color: var(--mads-faint);
 }

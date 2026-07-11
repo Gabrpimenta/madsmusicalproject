@@ -384,10 +384,9 @@ export const ageRanges = [
 ];
 
 export const interestCourses = [
-  "Canto",
-  "Teatro",
-  "Dança",
-  "Teatro Musical (completo)",
+  "Teatro Musical",
+  "Street Dance",
+  "K-pop",
 ];
 
 export const marqueeItems = [

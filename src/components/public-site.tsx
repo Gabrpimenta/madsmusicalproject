@@ -266,6 +266,8 @@ export function PublicSite() {
   const [themeReady, setThemeReady] = useState(false);
   const [values, setValues] = useState<EnrollmentForm>(emptyForm);
   const [fallbackUrl, setFallbackUrl] = useState("");
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
   const reduceMotion = shouldReduceMotion ?? false;
@@ -291,6 +293,19 @@ export function PublicSite() {
       window.localStorage.setItem("mads-theme", theme);
     }
   }, [theme, themeReady]);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowBackToTop(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   function updateField<K extends keyof EnrollmentForm>(
     key: K,
@@ -425,10 +440,11 @@ export function PublicSite() {
 
       <section
         id="inicio"
+        ref={heroRef}
         className="relative flex min-h-[100svh] items-center overflow-hidden"
       >
         <HeroVideo reduceMotion={reduceMotion} />
-        <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 pb-20 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
+        <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1500px] flex-col px-5 pb-24 pt-36 sm:block sm:min-h-0 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
           <motion.div
             {...reveal}
             className="mb-4 max-w-full text-[10px] font-bold uppercase tracking-[0.16em] text-mads-accent-soft sm:mb-5 sm:text-[13px] sm:tracking-[0.3em]"
@@ -458,7 +474,7 @@ export function PublicSite() {
           <motion.div
             {...reveal}
             transition={{ ...reveal.transition, delay: 0.32 }}
-            className="mt-8 flex max-w-[340px] flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4"
+            className="mt-auto flex max-w-[340px] flex-col gap-3 pb-16 sm:mt-8 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-0"
           >
             <GradientButton href="#contato">Quero me matricular</GradientButton>
             <Link
@@ -857,7 +873,7 @@ export function PublicSite() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
+              <p className="font-serif text-[16px] font-medium leading-snug min-[430px]:text-[18px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>
@@ -909,13 +925,21 @@ export function PublicSite() {
         </div>
       </footer>
 
-      <a
-        href="#inicio"
-        className="mads-cta fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full text-white transition md:h-14 md:w-14"
-        aria-label="Voltar ao topo"
-      >
-        <CaretDown className="rotate-180" size={24} weight="bold" />
-      </a>
+      <AnimatePresence>
+        {showBackToTop ? (
+          <motion.a
+            href="#inicio"
+            initial={{ opacity: 0, y: 12, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.9 }}
+            transition={{ duration: 0.24, ease: madsEase }}
+            className="mads-cta fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full text-white md:h-14 md:w-14"
+            aria-label="Voltar ao topo"
+          >
+            <CaretDown className="rotate-180" size={24} weight="bold" />
+          </motion.a>
+        ) : null}
+      </AnimatePresence>
     </main>
   );
 }

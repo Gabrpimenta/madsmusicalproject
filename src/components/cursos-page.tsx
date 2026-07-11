@@ -127,7 +127,7 @@ export function CursosPage() {
 
     const observer = new IntersectionObserver(
       ([entry]) => setShowBackToTop(!entry.isIntersecting),
-      { threshold: 0.05 },
+      { threshold: 0 },
     );
 
     observer.observe(hero);
@@ -519,7 +519,7 @@ export function CursosPage() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
+              <p className="font-serif text-[16px] font-medium leading-snug min-[430px]:text-[18px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>

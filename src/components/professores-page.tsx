@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
   CaretDown,
@@ -69,6 +69,8 @@ export function ProfessoresPage() {
   const [navOpen, setNavOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [themeReady, setThemeReady] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -90,6 +92,19 @@ export function ProfessoresPage() {
       window.localStorage.setItem("mads-theme", theme);
     }
   }, [theme, themeReady]);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowBackToTop(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main
@@ -214,7 +229,10 @@ export function ProfessoresPage() {
         ) : null}
       </header>
 
-      <section className="relative overflow-hidden px-5 pb-14 pt-32 sm:px-8 lg:px-11 lg:pb-20 lg:pt-40">
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden px-5 pb-14 pt-32 sm:px-8 lg:px-11 lg:pb-20 lg:pt-40"
+      >
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,var(--mads-bg)_0%,transparent_48%,var(--mads-bg)_100%)]" />
         <div className="mx-auto max-w-[1500px]">
           <motion.div
@@ -338,7 +356,7 @@ export function ProfessoresPage() {
                 height={72}
                 className="h-[72px] w-[72px] shrink-0 rounded-2xl object-cover shadow-[0_8px_26px_rgba(123,92,240,.28)]"
               />
-              <p className="font-serif text-[20px] font-medium leading-snug min-[430px]:text-[22px] md:text-[26px]">
+              <p className="font-serif text-[16px] font-medium leading-snug min-[430px]:text-[18px] md:text-[26px]">
                 Formando artistas conscientes do poder transformador da arte.
               </p>
             </div>
@@ -390,13 +408,21 @@ export function ProfessoresPage() {
         </div>
       </footer>
 
-      <a
-        href="#top"
-        className="mads-cta fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full text-white transition md:h-14 md:w-14"
-        aria-label="Voltar ao topo"
-      >
-        <CaretDown className="rotate-180" size={24} weight="bold" />
-      </a>
+      <AnimatePresence>
+        {showBackToTop ? (
+          <motion.a
+            href="#top"
+            initial={{ opacity: 0, y: 12, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.9 }}
+            transition={{ duration: 0.24, ease: madsEase }}
+            className="mads-cta fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full text-white md:h-14 md:w-14"
+            aria-label="Voltar ao topo"
+          >
+            <CaretDown className="rotate-180" size={24} weight="bold" />
+          </motion.a>
+        ) : null}
+      </AnimatePresence>
     </main>
   );
 }

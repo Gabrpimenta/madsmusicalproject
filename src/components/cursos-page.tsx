@@ -546,9 +546,15 @@ export function CursosPage() {
               </a>
             </div>
           </div>
-          <p className="pt-8 text-xs uppercase tracking-[0.16em] text-mads-faint">
-            © 2026 Mads Project. Todos os direitos reservados.
-          </p>
+          <div className="flex flex-col items-start gap-3 pt-8 text-xs uppercase tracking-[0.16em] text-mads-faint">
+            <p>© 2026 Mads Project. Todos os direitos reservados.</p>
+            <a
+              href="mailto:gabrielrpimenta@gmail.com"
+              className="w-fit rounded-full border border-mads-accent/20 bg-mads-accent/10 px-3 py-1.5 font-bold text-mads-accent transition hover:border-mads-accent/45 hover:bg-mads-accent/16 hover:text-mads-accent-soft"
+            >
+              Site feito por Gabriel Pimenta
+            </a>
+          </div>
         </div>
       </footer>
 

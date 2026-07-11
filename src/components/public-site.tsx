@@ -221,35 +221,32 @@ function EssenceCarousel({ reduceMotion }: { reduceMotion: boolean }) {
         </button>
       </div>
 
-      <div className="absolute bottom-3 left-3 right-3 z-10 rounded-lg border border-white/12 bg-black/30 p-3 text-white backdrop-blur-sm sm:bottom-5 sm:left-5 sm:right-5 sm:border-white/16 sm:bg-black/40 sm:p-5 sm:backdrop-blur-md">
-        <div className="flex items-start justify-between gap-3 sm:gap-4">
+      <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10 rounded-lg border border-white/10 bg-black/24 p-2.5 text-white backdrop-blur-[6px] sm:bottom-5 sm:left-5 sm:right-5 sm:border-white/16 sm:bg-black/40 sm:p-5 sm:backdrop-blur-md">
+        <div className="flex items-center justify-between gap-3 sm:items-start sm:gap-4">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-mads-accent-soft sm:text-[11px] sm:tracking-[0.22em]">
               Aprender fazendo
             </p>
-            <p className="mt-1 max-w-[15rem] font-serif text-[22px] font-semibold leading-[1.08] sm:mt-2 sm:max-w-none sm:text-2xl sm:leading-tight">
-              <span className="sm:hidden">Técnica, afeto e palco.</span>
-              <span className="hidden sm:inline">
-                Técnica, afeto e palco no mesmo processo.
-              </span>
+            <p className="mt-2 hidden font-serif text-2xl font-semibold leading-tight sm:block">
+              Técnica, afeto e palco no mesmo processo.
             </p>
           </div>
-          <span className="shrink-0 pt-0.5 text-[11px] font-semibold tabular-nums text-white/65 sm:pt-1 sm:text-xs">
+          <span className="shrink-0 text-[10px] font-semibold tabular-nums text-white/65 sm:pt-1 sm:text-xs">
             {String(activeIndex + 1).padStart(2, "0")} / {String(essenceImages.length).padStart(2, "0")}
           </span>
         </div>
-        <div className="mt-3 flex items-center gap-1.5 sm:mt-4 sm:gap-2" aria-label="Escolher imagem">
+        <div className="mt-2 flex items-center gap-1 sm:mt-4 sm:gap-2" aria-label="Escolher imagem">
           {essenceImages.map((image, index) => (
             <button
               key={image.src}
               type="button"
               onClick={() => showSlide(index)}
-              className="group flex h-4 flex-1 items-center sm:h-5"
+              className="group flex h-3 flex-1 items-center sm:h-5"
               aria-label={`Ver imagem ${index + 1}`}
               aria-current={index === activeIndex ? "true" : undefined}
             >
               <span
-                className={`h-1 w-full rounded-full transition ${
+                className={`h-0.5 w-full rounded-full transition sm:h-1 ${
                   index === activeIndex
                     ? "bg-white"
                     : "bg-white/28 group-hover:bg-white/55"
@@ -898,9 +895,15 @@ export function PublicSite() {
               </a>
             </div>
           </div>
-          <p className="pt-8 text-xs uppercase tracking-[0.16em] text-mads-faint">
-            © 2026 Mads Project. Todos os direitos reservados.
-          </p>
+          <div className="flex flex-col items-start gap-3 pt-8 text-xs uppercase tracking-[0.16em] text-mads-faint">
+            <p>© 2026 Mads Project. Todos os direitos reservados.</p>
+            <a
+              href="mailto:gabrielrpimenta@gmail.com"
+              className="w-fit rounded-full border border-mads-accent/20 bg-mads-accent/10 px-3 py-1.5 font-bold text-mads-accent transition hover:border-mads-accent/45 hover:bg-mads-accent/16 hover:text-mads-accent-soft"
+            >
+              Site feito por Gabriel Pimenta
+            </a>
+          </div>
         </div>
       </footer>
 

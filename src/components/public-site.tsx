@@ -157,7 +157,7 @@ function EssenceCarousel({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div
       ref={carouselRef}
-      className="relative aspect-[4/3.4] overflow-hidden rounded-lg border border-mads-border shadow-[0_30px_80px_rgba(0,0,0,.35)]"
+      className="relative aspect-[4/4.35] overflow-hidden rounded-lg border border-mads-border shadow-[0_30px_80px_rgba(0,0,0,.35)] sm:aspect-[4/3.4]"
       aria-roledescription="carrossel"
       aria-label="Momentos de aulas e apresentações do Mads Project"
     >
@@ -200,13 +200,13 @@ function EssenceCarousel({ reduceMotion }: { reduceMotion: boolean }) {
         </motion.div>
       </AnimatePresence>
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(8,4,12,.82)_0%,rgba(8,4,12,.18)_58%,transparent_78%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(8,4,12,.72)_0%,rgba(8,4,12,.14)_44%,transparent_68%)] sm:bg-[linear-gradient(0deg,rgba(8,4,12,.82)_0%,rgba(8,4,12,.18)_58%,transparent_78%)]" />
 
-      <div className="absolute right-4 top-4 z-10 flex gap-2">
+      <div className="absolute right-3 top-3 z-10 flex gap-2 sm:right-4 sm:top-4">
         <button
           type="button"
           onClick={() => moveSlide(-1)}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/40 text-white backdrop-blur-md transition hover:border-white/60 hover:bg-black/60 focus-visible:border-white"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-black/36 text-white backdrop-blur-md transition hover:border-white/60 hover:bg-black/60 focus-visible:border-white sm:h-10 sm:w-10"
           aria-label="Ver imagem anterior"
         >
           <CaretLeft size={18} weight="bold" aria-hidden="true" />
@@ -214,34 +214,37 @@ function EssenceCarousel({ reduceMotion }: { reduceMotion: boolean }) {
         <button
           type="button"
           onClick={() => moveSlide(1)}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/40 text-white backdrop-blur-md transition hover:border-white/60 hover:bg-black/60 focus-visible:border-white"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-black/36 text-white backdrop-blur-md transition hover:border-white/60 hover:bg-black/60 focus-visible:border-white sm:h-10 sm:w-10"
           aria-label="Ver próxima imagem"
         >
           <CaretRight size={18} weight="bold" aria-hidden="true" />
         </button>
       </div>
 
-      <div className="absolute bottom-5 left-5 right-5 z-10 rounded-lg border border-white/16 bg-black/40 p-5 text-white backdrop-blur-md">
-        <div className="flex items-start justify-between gap-4">
+      <div className="absolute bottom-3 left-3 right-3 z-10 rounded-lg border border-white/12 bg-black/30 p-3 text-white backdrop-blur-sm sm:bottom-5 sm:left-5 sm:right-5 sm:border-white/16 sm:bg-black/40 sm:p-5 sm:backdrop-blur-md">
+        <div className="flex items-start justify-between gap-3 sm:gap-4">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-mads-accent-soft">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-mads-accent-soft sm:text-[11px] sm:tracking-[0.22em]">
               Aprender fazendo
             </p>
-            <p className="mt-2 font-serif text-2xl font-semibold">
-              Técnica, afeto e palco no mesmo processo.
+            <p className="mt-1 max-w-[15rem] font-serif text-[22px] font-semibold leading-[1.08] sm:mt-2 sm:max-w-none sm:text-2xl sm:leading-tight">
+              <span className="sm:hidden">Técnica, afeto e palco.</span>
+              <span className="hidden sm:inline">
+                Técnica, afeto e palco no mesmo processo.
+              </span>
             </p>
           </div>
-          <span className="shrink-0 pt-1 text-xs font-semibold tabular-nums text-white/65">
+          <span className="shrink-0 pt-0.5 text-[11px] font-semibold tabular-nums text-white/65 sm:pt-1 sm:text-xs">
             {String(activeIndex + 1).padStart(2, "0")} / {String(essenceImages.length).padStart(2, "0")}
           </span>
         </div>
-        <div className="mt-4 flex items-center gap-2" aria-label="Escolher imagem">
+        <div className="mt-3 flex items-center gap-1.5 sm:mt-4 sm:gap-2" aria-label="Escolher imagem">
           {essenceImages.map((image, index) => (
             <button
               key={image.src}
               type="button"
               onClick={() => showSlide(index)}
-              className="group flex h-5 flex-1 items-center"
+              className="group flex h-4 flex-1 items-center sm:h-5"
               aria-label={`Ver imagem ${index + 1}`}
               aria-current={index === activeIndex ? "true" : undefined}
             >
@@ -777,16 +780,16 @@ export function PublicSite() {
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label className="mads-label" htmlFor="ageRange">
+                <p className="mads-label" id="ageRangeLabel">
                   Faixa etária
-                </label>
-                <input
-                  className="mads-field"
-                  id="ageRange"
-                  readOnly
-                  value={values.ageRange}
+                </p>
+                <div
+                  className="mads-field mads-static-field"
+                  aria-labelledby="ageRangeLabel"
                   aria-describedby="ageRangeHint"
-                />
+                >
+                  {values.ageRange}
+                </div>
                 <p id="ageRangeHint" className="mt-2 text-xs text-mads-faint">
                   Turmas para crianças e jovens nessa faixa.
                 </p>
@@ -796,7 +799,7 @@ export function PublicSite() {
                   Curso
                 </label>
                 <select
-                  className="mads-field"
+                  className="mads-field mads-select"
                   id="course"
                   value={values.course}
                   onChange={(event) => updateField("course", event.target.value)}

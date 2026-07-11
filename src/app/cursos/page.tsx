@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: `Cursos | ${site.name}`,
   description:
     "Conheça os cursos de Teatro Musical, Street Dance e K-pop do Mads Project para crianças e jovens em São Paulo.",
+  alternates: {
+    canonical: `${site.url}/cursos/`,
+  },
   openGraph: {
     title: `Cursos | ${site.name}`,
     description:

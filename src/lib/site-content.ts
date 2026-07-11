@@ -27,7 +27,7 @@ export const site = {
     "Escola de teatro musical para crianças e jovens em São Paulo, com formação em canto, teatro e dança.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://madsmusical.com.br",
   logo: withBasePath("/assets/mads-logo.jpeg"),
-  heroVideo: withBasePath("/assets/media/hero-stage-loop.mp4"),
+  heroVideo: withBasePath("/assets/media/hero-stage-loop-web.mp4"),
   heroPoster: withBasePath("/assets/media/hero-stage-poster.jpg"),
   orientadoraImage: withBasePath("/assets/madona-perfil.jpeg"),
   whatsappNumber: "5511961739191",

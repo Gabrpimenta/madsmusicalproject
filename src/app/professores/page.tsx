@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: `Professores | ${site.name}`,
   description:
     "Conheça o time artístico-pedagógico do Mads Project: professores de canto, teatro, dança e teatro musical.",
+  alternates: {
+    canonical: `${site.url}/professores/`,
+  },
   openGraph: {
     title: `Professores | ${site.name}`,
     description:

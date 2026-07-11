@@ -103,6 +103,10 @@ function HeroVideo({ reduceMotion }: { reduceMotion: boolean }) {
       video.muted = true;
       video.defaultMuted = true;
       video.playsInline = true;
+      video.setAttribute("autoplay", "");
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
 
       if (!video.paused) return;
 
@@ -154,6 +158,9 @@ function HeroVideo({ reduceMotion }: { reduceMotion: boolean }) {
           muted
           loop
           playsInline
+          controls={false}
+          disablePictureInPicture
+          webkit-playsinline=""
           preload="auto"
         />
       ) : null}

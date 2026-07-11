@@ -474,7 +474,7 @@ export function PublicSite() {
           <motion.div
             {...reveal}
             transition={{ ...reveal.transition, delay: 0.32 }}
-            className="mt-auto flex max-w-[340px] flex-col gap-3 pb-16 sm:mt-8 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-0"
+            className="mt-auto flex max-w-[340px] flex-col gap-3 pb-12 sm:mt-8 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-0"
           >
             <GradientButton href="#contato">Quero me matricular</GradientButton>
             <Link

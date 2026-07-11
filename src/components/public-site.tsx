@@ -343,6 +343,7 @@ export function PublicSite() {
               alt="Mads Project"
               width={56}
               height={56}
+              priority
               className="h-12 w-12 rounded-xl object-cover shadow-[0_6px_20px_rgba(123,92,240,.42)] lg:h-14 lg:w-14"
             />
             <span className="sr-only">Mads Project</span>
@@ -444,7 +445,7 @@ export function PublicSite() {
         className="relative flex min-h-[100svh] items-center overflow-hidden"
       >
         <HeroVideo reduceMotion={reduceMotion} />
-        <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1500px] flex-col px-5 pb-24 pt-36 sm:block sm:min-h-0 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
+        <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1500px] flex-col px-5 pb-10 pt-36 sm:block sm:min-h-0 sm:px-8 sm:pb-20 sm:pt-32 lg:px-11 xl:pb-14 xl:pt-28">
           <motion.div
             {...reveal}
             className="mb-4 max-w-full text-[10px] font-bold uppercase tracking-[0.16em] text-mads-accent-soft sm:mb-5 sm:text-[13px] sm:tracking-[0.3em]"
@@ -474,7 +475,7 @@ export function PublicSite() {
           <motion.div
             {...reveal}
             transition={{ ...reveal.transition, delay: 0.32 }}
-            className="mt-auto flex max-w-[340px] flex-col gap-3 pb-12 sm:mt-8 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-0"
+            className="mt-auto flex max-w-[340px] flex-col gap-3 sm:mt-8 sm:max-w-none sm:flex-row sm:flex-wrap sm:gap-4"
           >
             <GradientButton href="#contato">Quero me matricular</GradientButton>
             <Link
@@ -487,7 +488,7 @@ export function PublicSite() {
         </div>
         <a
           href="#escola"
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-[mads-bounce_2s_ease-in-out_infinite] text-white/70"
+          className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 animate-[mads-bounce_2s_ease-in-out_infinite] text-white/70 sm:block"
           aria-label="Ir para A Escola"
         >
           <CaretDown size={28} weight="bold" />

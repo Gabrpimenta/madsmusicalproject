@@ -255,6 +255,16 @@ textarea {
   padding-right: 58px;
 }
 
+.mads-select option {
+  background: #ffffff;
+  color: #1a1220;
+}
+
+.mads-select option:checked {
+  background: #efe4ff;
+  color: #1a1220;
+}
+
 .mads-field::placeholder {
   color: var(--mads-faint);
 }

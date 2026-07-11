@@ -68,6 +68,13 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${outfit.variable} ${fraunces.variable} h-full scroll-smooth antialiased`}
     >
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self'; connect-src 'self' https://*.supabase.co; frame-src 'none'; child-src 'none'; worker-src 'self' blob:; manifest-src 'self'; form-action 'self';"
+        />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+      </head>
       <body className="min-h-full bg-mads-bg text-mads-text">{children}</body>
     </html>
   );

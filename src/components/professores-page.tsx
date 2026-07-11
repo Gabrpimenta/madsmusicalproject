@@ -122,6 +122,7 @@ export function ProfessoresPage() {
               alt="Mads Project"
               width={56}
               height={56}
+              priority
               className="h-12 w-12 rounded-xl object-cover shadow-[0_6px_20px_rgba(123,92,240,.42)] lg:h-14 lg:w-14"
             />
             <span className="sr-only">Mads Project</span>

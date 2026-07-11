@@ -91,6 +91,49 @@ function GradientButton({
 }
 
 function HeroVideo({ reduceMotion }: { reduceMotion: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
+      if (!video.paused) return;
+
+      void video.play().catch(() => {
+        // Muted autoplay can still be blocked by some browser/device policies.
+      });
+    };
+
+    playVideo();
+
+    const resumeWhenVisible = () => {
+      if (document.visibilityState === "visible") {
+        playVideo();
+      }
+    };
+
+    video.addEventListener("canplay", playVideo);
+    video.addEventListener("loadeddata", playVideo);
+    window.addEventListener("pageshow", playVideo);
+    window.addEventListener("focus", playVideo);
+    document.addEventListener("visibilitychange", resumeWhenVisible);
+
+    return () => {
+      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("loadeddata", playVideo);
+      window.removeEventListener("pageshow", playVideo);
+      window.removeEventListener("focus", playVideo);
+      document.removeEventListener("visibilitychange", resumeWhenVisible);
+    };
+  }, [reduceMotion]);
+
   return (
     <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
       <Image
@@ -103,6 +146,7 @@ function HeroVideo({ reduceMotion }: { reduceMotion: boolean }) {
       />
       {!reduceMotion ? (
         <video
+          ref={videoRef}
           className="hero-video absolute inset-0 h-full w-full object-cover"
           src={site.heroVideo}
           poster={site.heroPoster}
@@ -110,7 +154,7 @@ function HeroVideo({ reduceMotion }: { reduceMotion: boolean }) {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
         />
       ) : null}
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,4,12,.95)_0%,rgba(13,7,18,.76)_42%,rgba(13,7,18,.34)_100%)]" />
@@ -398,14 +442,36 @@ export function PublicSite() {
             </button>
           </div>
 
-          <button
-            type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-mads-border bg-mads-surface xl:hidden"
-            onClick={() => setNavOpen((current) => !current)}
-            aria-label="Abrir menu"
-          >
-            {navOpen ? <X size={19} weight="bold" /> : <List size={19} weight="bold" />}
-          </button>
+          <div className="flex items-center gap-2 xl:hidden">
+            <button
+              type="button"
+              onClick={() =>
+                setTheme((current) => (current === "dark" ? "light" : "dark"))
+              }
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-mads-border bg-mads-surface text-mads-text transition hover:border-mads-accent hover:text-mads-accent md:hidden"
+              aria-label={
+                theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"
+              }
+            >
+              {theme === "dark" ? (
+                <Sun size={17} weight="bold" />
+              ) : (
+                <Moon size={17} weight="bold" />
+              )}
+            </button>
+            <button
+              type="button"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-mads-border bg-mads-surface"
+              onClick={() => setNavOpen((current) => !current)}
+              aria-label="Abrir menu"
+            >
+              {navOpen ? (
+                <X size={19} weight="bold" />
+              ) : (
+                <List size={19} weight="bold" />
+              )}
+            </button>
+          </div>
         </nav>
 
         {navOpen ? (

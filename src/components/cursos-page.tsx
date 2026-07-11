@@ -196,18 +196,30 @@ export function CursosPage() {
             />
           </div>
 
-          <button
-            type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-mads-border bg-mads-surface xl:hidden"
-            onClick={() => setNavOpen((current) => !current)}
-            aria-label="Abrir menu"
-          >
-            {navOpen ? (
-              <X size={19} weight="bold" />
-            ) : (
-              <List size={19} weight="bold" />
-            )}
-          </button>
+          <div className="flex items-center gap-2 xl:hidden">
+            <div className="md:hidden">
+              <ThemeToggle
+                theme={theme}
+                onToggle={() =>
+                  setTheme((current) =>
+                    current === "dark" ? "light" : "dark",
+                  )
+                }
+              />
+            </div>
+            <button
+              type="button"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-mads-border bg-mads-surface"
+              onClick={() => setNavOpen((current) => !current)}
+              aria-label="Abrir menu"
+            >
+              {navOpen ? (
+                <X size={19} weight="bold" />
+              ) : (
+                <List size={19} weight="bold" />
+              )}
+            </button>
+          </div>
         </nav>
 
         {navOpen ? (
@@ -223,21 +235,6 @@ export function CursosPage() {
                     {link.label}
                   </Link>
                 ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setTheme((current) => (current === "dark" ? "light" : "dark"));
-                  setNavOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.14em] text-mads-muted hover:bg-mads-surface hover:text-mads-text"
-              >
-                {theme === "dark" ? (
-                  <Sun size={17} weight="bold" />
-                ) : (
-                  <Moon size={17} weight="bold" />
-                )}
-                {theme === "dark" ? "Modo claro" : "Modo escuro"}
-              </button>
             </div>
           </div>
         ) : null}

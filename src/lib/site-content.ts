@@ -376,6 +376,21 @@ export const teacherProfiles = [
     ],
   },
   {
+    name: "Victor Lazzari",
+    role: "Professor de teatro",
+    image: withBasePath("/assets/professores/victor-lazzari.jpeg"),
+    imagePosition: "center 28%",
+    specialties: ["Teatro", "Teatro musical", "Corpo"],
+    bio: [
+      "Profissional das artes cênicas, com experiência em teatro, teatro musical, dança e formação artística. Atua na preparação e no desenvolvimento de crianças, adolescentes e adultos, promovendo o aprendizado por meio de uma metodologia que une técnica, criatividade, disciplina e sensibilidade.",
+      "Ao longo de sua trajetória, participou de projetos artísticos, educacionais e culturais, desenvolvendo processos criativos que estimulam a expressão, a comunicação, a confiança e o trabalho em equipe. Acredita que a arte é uma importante ferramenta de transformação, capaz de fortalecer habilidades técnicas, emocionais e sociais, respeitando a individualidade e o potencial de cada aluno.",
+      "Seu trabalho busca proporcionar experiências significativas de aprendizado, incentivando a autonomia, a criatividade e o desenvolvimento artístico em um ambiente acolhedor, colaborativo e inspirador.",
+    ],
+  },
+];
+
+export const guestTeacherProfiles = [
+  {
     name: "Miguel Gonçalves",
     role: "Teatro e circo",
     image: withBasePath("/assets/professores/miguel-goncalves.jpeg"),
@@ -388,15 +403,17 @@ export const teacherProfiles = [
     ],
   },
   {
-    name: "Victor Lazzari",
-    role: "Professor de teatro",
-    image: withBasePath("/assets/professores/victor-lazzari.jpeg"),
-    imagePosition: "center 28%",
-    specialties: ["Teatro", "Teatro musical", "Corpo"],
+    name: "Dionisio dos Santos Matheus",
+    role: "Teatro, canto e direção",
+    image: withBasePath(
+      "/assets/professores/dionisio-dos-santos-matheus.jpeg",
+    ),
+    imagePosition: "center 24%",
+    specialties: ["Teatro", "Canto", "Direção"],
     bio: [
-      "Profissional das artes cênicas, com experiência em teatro, teatro musical, dança e formação artística. Atua na preparação e no desenvolvimento de crianças, adolescentes e adultos, promovendo o aprendizado por meio de uma metodologia que une técnica, criatividade, disciplina e sensibilidade.",
-      "Ao longo de sua trajetória, participou de projetos artísticos, educacionais e culturais, desenvolvendo processos criativos que estimulam a expressão, a comunicação, a confiança e o trabalho em equipe. Acredita que a arte é uma importante ferramenta de transformação, capaz de fortalecer habilidades técnicas, emocionais e sociais, respeitando a individualidade e o potencial de cada aluno.",
-      "Seu trabalho busca proporcionar experiências significativas de aprendizado, incentivando a autonomia, a criatividade e o desenvolvimento artístico em um ambiente acolhedor, colaborativo e inspirador.",
+      "Dionisio dos Santos Matheus é ator, cantor, diretor, dramaturgo e arte-educador, natural de São Miguel Paulista, em São Paulo. Bacharel em Interpretação Teatral pela ECA-USP desde 2020, atualmente cursa Licenciatura em Arte-Teatro no Instituto de Artes da UNESP.",
+      "Atua desde os sete anos e aprofundou sua formação em canto e teatro musical na TeenBroadway, na Escola Técnica de Artes e no CultSP Pro, além de manter acompanhamento vocal com os professores e fonoaudiólogos André Barroso e Marcio Markkx. Na educação, trabalhou com educação museal no Museu da Língua Portuguesa e no Sesc, ministrou aulas nos CEUs Pinheirinho e Tremembé e atuou em escolas entre 2021 e 2025.",
+      "No teatro, também escreve e dirige. Entre seus trabalhos estão os monólogos autorais \"Gama por Gama\", inspirado na carta autobiográfica de Luiz Gama, e \"Buracos Negros\", criado a partir de histórias de bixas pretas de São Paulo. Atualmente desenvolve a pesquisa de \"Casa?\", do Teatro Ngoma, na qual atua e dirige, e também integrou montagens como \"DizATerra\" e \"Leporifobia\".",
     ],
   },
 ];

@@ -15,7 +15,12 @@ import {
   UsersThree,
   X,
 } from "@phosphor-icons/react";
-import { navLinks, site, teacherProfiles } from "@/lib/site-content";
+import {
+  guestTeacherProfiles,
+  navLinks,
+  site,
+  teacherProfiles,
+} from "@/lib/site-content";
 
 type ThemeMode = "dark" | "light";
 
@@ -62,6 +67,62 @@ function ThemeToggle({
         <Moon size={17} weight="bold" />
       )}
     </button>
+  );
+}
+
+type TeacherProfile =
+  | (typeof teacherProfiles)[number]
+  | (typeof guestTeacherProfiles)[number];
+
+function TeacherCard({
+  teacher,
+  index,
+}: {
+  teacher: TeacherProfile;
+  index: number;
+}) {
+  return (
+    <motion.article
+      {...reveal}
+      transition={{ ...reveal.transition, delay: index * 0.06 }}
+      className="h-full rounded-lg border border-mads-border bg-mads-panel p-6 shadow-[0_20px_70px_rgba(0,0,0,.12)]"
+    >
+      <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-mads-border bg-mads-surface p-1 shadow-[0_0_34px_rgba(123,92,240,.18)]">
+        <div className="relative h-full w-full overflow-hidden rounded-full">
+          <Image
+            src={teacher.image}
+            alt={`Retrato de ${teacher.name}.`}
+            fill
+            className="object-cover"
+            style={{ objectPosition: teacher.imagePosition }}
+            sizes="160px"
+          />
+        </div>
+      </div>
+      <div className="mt-8">
+        <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-mads-accent">
+          {teacher.role}
+        </p>
+        <h3 className="mt-3 font-serif text-3xl font-semibold leading-tight">
+          {teacher.name}
+        </h3>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {teacher.specialties.map((specialty) => (
+            <span
+              key={specialty}
+              className="mads-pill rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
+            >
+              {specialty}
+            </span>
+          ))}
+        </div>
+        <div className="mt-6 grid gap-4 text-[15px] font-light leading-7 text-mads-muted">
+          {teacher.bio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </motion.article>
   );
 }
 
@@ -278,69 +339,62 @@ export function ProfessoresPage() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           {teacherProfiles.map((teacher, index) => (
-            <motion.article
+            <TeacherCard
               key={teacher.name}
-              {...reveal}
-              transition={{ ...reveal.transition, delay: index * 0.06 }}
-              className="rounded-lg border border-mads-border bg-mads-panel p-6 shadow-[0_20px_70px_rgba(0,0,0,.12)]"
-            >
-              <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-mads-border bg-mads-surface p-1 shadow-[0_0_34px_rgba(123,92,240,.18)]">
-                <div className="relative h-full w-full overflow-hidden rounded-full">
-                  <Image
-                    src={teacher.image}
-                    alt={`Retrato de ${teacher.name}.`}
-                    fill
-                    className="object-cover"
-                    style={{ objectPosition: teacher.imagePosition }}
-                    sizes="160px"
-                  />
-                </div>
-              </div>
-              <div className="mt-8">
-                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-mads-accent">
-                  {teacher.role}
-                </p>
-                <h3 className="mt-3 font-serif text-3xl font-semibold leading-tight">
-                  {teacher.name}
-                </h3>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {teacher.specialties.map((specialty) => (
-                    <span
-                      key={specialty}
-                      className="mads-pill rounded-full border border-mads-border bg-mads-surface px-3 py-1.5 text-xs font-bold text-mads-muted"
-                    >
-                      {specialty}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 grid gap-4 text-[15px] font-light leading-7 text-mads-muted">
-                  {teacher.bio.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-            </motion.article>
+              teacher={teacher}
+              index={index}
+            />
           ))}
         </div>
+      </section>
 
-        <motion.div {...reveal} className="mt-14 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/#contato"
-            className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white transition"
+      <section className="border-y border-mads-border bg-mads-surface px-5 py-20 sm:px-8 lg:px-11 lg:py-28">
+        <div className="mx-auto max-w-[1500px]">
+          <motion.div {...reveal} className="mx-auto max-w-3xl text-center">
+            <p className="text-[12px] font-bold uppercase tracking-[0.24em] text-mads-accent">
+              Participações especiais
+            </p>
+            <h2 className="mt-5 whitespace-nowrap font-serif text-[clamp(22px,7vw,76px)] font-semibold leading-none tracking-[-0.025em]">
+              Professores convidados
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-8 text-mads-muted">
+              Professores substitutos e profissionais que participam de cursos
+              especiais e das programações de férias.
+            </p>
+          </motion.div>
+
+          <div className="mx-auto mt-12 grid max-w-5xl gap-6 lg:grid-cols-2">
+            {guestTeacherProfiles.map((teacher, index) => (
+              <TeacherCard
+                key={teacher.name}
+                teacher={teacher}
+                index={index}
+              />
+            ))}
+          </div>
+
+          <motion.div
+            {...reveal}
+            className="mt-14 flex flex-wrap items-center justify-center gap-4"
           >
-            Falar sobre aulas
-            <ArrowRight size={17} weight="bold" aria-hidden="true" />
-          </Link>
-          <a
-            href={site.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-3 rounded-xl border border-mads-border bg-mads-surface px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-mads-text transition hover:border-mads-accent hover:text-mads-accent"
-          >
-            <InstagramLogo size={18} weight="duotone" aria-hidden="true" />
-            Instagram
-          </a>
-        </motion.div>
+            <Link
+              href="/#contato"
+              className="mads-cta inline-flex items-center justify-center gap-3 rounded-xl px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-white transition"
+            >
+              Falar sobre aulas
+              <ArrowRight size={17} weight="bold" aria-hidden="true" />
+            </Link>
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 rounded-xl border border-mads-border bg-mads-panel px-7 py-4 text-[13px] font-bold uppercase tracking-[0.16em] text-mads-text transition hover:border-mads-accent hover:text-mads-accent"
+            >
+              <InstagramLogo size={18} weight="duotone" aria-hidden="true" />
+              Instagram
+            </a>
+          </motion.div>
+        </div>
       </section>
 
       <footer className="bg-mads-footer px-5 py-16 sm:px-8 lg:px-11">

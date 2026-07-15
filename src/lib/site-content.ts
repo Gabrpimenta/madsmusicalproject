@@ -301,6 +301,19 @@ export const teacherProfiles = [
     ],
   },
   {
+    name: "Natália Cunha",
+    role: "Street Dance",
+    image: withBasePath("/assets/professores/natalia-cunha.jpg"),
+    imagePosition: "center 28%",
+    specialties: ["Street Dance", "Waacking", "Danças urbanas"],
+    bio: [
+      "Natália Cunha é professora de Street Dance, artista da dança, educadora social e produtora cultural. Atua com as Danças Urbanas há mais de 15 anos, tendo no Waacking sua principal linha de pesquisa e desenvolvimento artístico.",
+      "Ao longo de sua trajetória, ministrou aulas, oficinas e workshops em escolas, projetos sociais, centros culturais e festivais, trabalhando com crianças, adolescentes e adultos. Também participa de projetos culturais, apresentações, competições, videoclipes e campanhas, sempre promovendo o acesso à arte e à cultura.",
+      "No MADS Project Musical, conduz as aulas de Street Dance, apresentando aos alunos diferentes linguagens das Danças Urbanas por meio de exercícios de musicalidade, criação, improvisação e expressão corporal. Suas aulas estimulam a criatividade, a presença cênica, o trabalho em equipe e a confiança, em um ambiente acolhedor e respeitoso.",
+      "Natália acredita na dança como uma poderosa ferramenta de transformação, capaz de fortalecer a autoestima, a autonomia, a sensibilidade e o desenvolvimento artístico e humano de cada aluno.",
+    ],
+  },
+  {
     name: "Giovanna Federzoni",
     role: "Teatro",
     image: withBasePath("/assets/professores/giovanna-federzoni.jpeg"),
@@ -310,6 +323,19 @@ export const teacherProfiles = [
       "Atriz, performer e arte-educadora, graduada em Comunicação das Artes do Corpo pela PUC-SP e formada em Teatro Musical pela 4 Act Performing Arts.",
       "Desenvolveu pesquisas em teatro Nô entre 2015 e 2019 e foi cofundadora do Coletivo Nuvem, contemplado pelos programas VAI 1 e PROAC. Atuou como assistente de direção, preparadora corporal e produtora em projetos do grupo A Motosserra Perfumada.",
       "Integra montagens de teatro musical e infantil por companhias como Cia Singulari, Cia Vila Teatro e Grupo Trapiche. Em 2024, interpretou Chiquinha em \"O Circo Mágico do Chaves\" e, em 2025, integrou produções do grupo Cemitério de Automóveis.",
+    ],
+  },
+  {
+    name: "Verônica Andreazze",
+    role: "K-pop e Danças Urbanas",
+    image: withBasePath("/assets/professores/veronica-andreazze.jpg"),
+    imagePosition: "center 30%",
+    specialties: ["K-pop", "Danças urbanas", "Coreografia"],
+    bio: [
+      "Verônica Andreazze é professora de K-pop e Danças Urbanas, licenciada em Artes Visuais pela Universidade Federal do Rio Grande do Norte (UFRN). Atua como dançarina e educadora há mais de seis anos, unindo experiência artística, didática e formação contínua.",
+      "Ao longo de sua trajetória, ministrou aulas, workshops e participou de festivais e projetos culturais em diferentes estados do Brasil. Também desenvolve trabalhos como coreógrafa e bailarina em videoclipes, apresentações e eventos, mantendo constante aperfeiçoamento em estilos como Hip-Hop, House Dance, Popping, Litefeet e K-Hip Hop.",
+      "No MADS Project Musical, conduz as aulas de K-pop e Danças Urbanas, proporcionando aos alunos um ambiente dinâmico e acolhedor para desenvolver técnica, musicalidade, coordenação, criatividade e expressão corporal. Suas aulas incentivam a disciplina, o trabalho em equipe, a confiança e a descoberta da identidade artística de cada estudante.",
+      "Verônica acredita que a dança é uma poderosa ferramenta de desenvolvimento humano, capaz de fortalecer a autoestima, ampliar a criatividade e transformar a forma como cada aluno se relaciona consigo mesmo e com o mundo.",
     ],
   },
   {

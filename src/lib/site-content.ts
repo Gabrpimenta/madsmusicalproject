@@ -402,20 +402,6 @@ export const guestTeacherProfiles = [
       "Sua trajetória inclui atuação como professor de circo, palhaço voluntário na Operação Arco-Íris, orientador teatral pela POIESIS e participação em coletivos e espetáculos teatrais premiados.",
     ],
   },
-  {
-    name: "Dionisio dos Santos Matheus",
-    role: "Teatro, canto e direção",
-    image: withBasePath(
-      "/assets/professores/dionisio-dos-santos-matheus.jpeg",
-    ),
-    imagePosition: "center 24%",
-    specialties: ["Teatro", "Canto", "Direção"],
-    bio: [
-      "Dionisio dos Santos Matheus é ator, cantor, diretor, dramaturgo e arte-educador, natural de São Miguel Paulista, em São Paulo. Bacharel em Interpretação Teatral pela ECA-USP desde 2020, atualmente cursa Licenciatura em Arte-Teatro no Instituto de Artes da UNESP.",
-      "Atua desde os sete anos e aprofundou sua formação em canto e teatro musical na TeenBroadway, na Escola Técnica de Artes e no CultSP Pro, além de manter acompanhamento vocal com os professores e fonoaudiólogos André Barroso e Marcio Markkx. Na educação, trabalhou com educação museal no Museu da Língua Portuguesa e no Sesc, ministrou aulas nos CEUs Pinheirinho e Tremembé e atuou em escolas entre 2021 e 2025.",
-      "No teatro, também escreve e dirige. Entre seus trabalhos estão os monólogos autorais \"Gama por Gama\", inspirado na carta autobiográfica de Luiz Gama, e \"Buracos Negros\", criado a partir de histórias de bixas pretas de São Paulo. Atualmente desenvolve a pesquisa de \"Casa?\", do Teatro Ngoma, na qual atua e dirige, e também integrou montagens como \"DizATerra\" e \"Leporifobia\".",
-    ],
-  },
 ];
 
 export const ageRanges = [

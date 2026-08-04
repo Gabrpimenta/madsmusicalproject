@@ -377,7 +377,7 @@ export const teacherProfiles = [
   },
   {
     name: "Victor Lazzari",
-    role: "Professor de teatro",
+    role: "Teatro",
     image: withBasePath("/assets/professores/victor-lazzari.jpeg"),
     imagePosition: "center 28%",
     specialties: ["Teatro", "Teatro musical", "Corpo"],
@@ -400,6 +400,18 @@ export const guestTeacherProfiles = [
       "Arte-educador e ator formado em Artes Cênicas pela Universidade Estadual Paulista, com experiência em teatro, circo e educação infantil.",
       "Atualmente atua como professor de teatro nas escolas Maple Bear e ARBOS. Também trabalhou como educador infantil no espaço Quintal da Vila, utilizando abordagens inspiradas em Montessori e Emmi Pickler.",
       "Sua trajetória inclui atuação como professor de circo, palhaço voluntário na Operação Arco-Íris, orientador teatral pela POIESIS e participação em coletivos e espetáculos teatrais premiados.",
+    ],
+  },
+  {
+    name: "Mariana Rodrigues",
+    role: "Figurino",
+    image: withBasePath("/assets/professores/mariana-rodrigues.jpeg"),
+    imagePosition: "center 28%",
+    specialties: ["Figurino", "Design de moda", "Narrativa visual"],
+    bio: [
+      "Mariana Rodrigues é formada em Design de Moda e atua como figurinista, desenvolvendo projetos que unem criatividade, pesquisa e narrativa visual. Sua experiência na área da educação inclui a atuação como professora de Figurino, ministrando aulas voltadas à introdução e ao aprofundamento dos processos de criação de trajes para as artes cênicas.",
+      "Em sua prática pedagógica, aborda temas como pesquisa de referências, construção da identidade visual de personagens, contexto histórico, teoria das cores, tecidos e processos criativos aplicados ao figurino. Seu trabalho busca estimular a criatividade, o olhar crítico e a compreensão do figurino como elemento essencial para a construção da narrativa e da linguagem cênica.",
+      "No Mads Musical Project, Mariana é responsável pelas aulas especiais de Figurino do curso regular, proporcionando aos alunos experiências práticas que ampliam o repertório artístico e incentivam a expressão individual por meio da criação de personagens e da construção visual para o teatro musical.",
     ],
   },
 ];

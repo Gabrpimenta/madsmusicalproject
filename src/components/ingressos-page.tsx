@@ -17,6 +17,9 @@ const pixKey = "65602923000169";
 const ticketPrice = 45;
 const showDate = "19/11/2026";
 const pickupAddress = site.address;
+const venueAddress =
+  "Av. Imperatriz Leopoldina, 550 – Vila Leopoldina, São Paulo – SP";
+const venueMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueAddress)}`;
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("pt-BR", {
@@ -158,6 +161,38 @@ export function IngressosPage() {
               </p>
             </article>
           ))}
+        </section>
+
+        <section
+          aria-labelledby="venue-title"
+          className="mt-5 flex flex-col gap-5 rounded-3xl border border-mads-border bg-mads-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+        >
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+              Local do espetáculo
+            </p>
+            <h2 id="venue-title" className="mt-2 font-serif text-2xl font-semibold">
+              19 de novembro de 2026 · Teatro
+            </h2>
+            <p className="mt-2 flex gap-2 text-sm leading-relaxed text-mads-muted">
+              <MapPin size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
+              {venueAddress}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 sm:justify-end">
+            <span className="rounded-full border border-mads-border px-4 py-2 text-sm font-semibold text-mads-text">
+              Capacidade: 300 lugares
+            </span>
+            <a
+              href={venueMapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-mads-border px-4 py-2 text-sm font-semibold text-mads-muted transition hover:border-mads-accent hover:text-mads-text"
+            >
+              Abrir mapa
+              <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
+            </a>
+          </div>
         </section>
 
         <section className="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-[1fr_1fr]">

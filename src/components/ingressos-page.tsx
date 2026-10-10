@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -8,31 +8,43 @@ import {
   ArrowUpRight,
   Check,
   Copy,
+  MapPin,
   Ticket,
 } from "@phosphor-icons/react";
 import { site } from "@/lib/site-content";
 
 const pixKey = "65602923000169";
+const ticketPrice = 45;
+const showDate = "19/11/2026";
+const pickupAddress = site.address;
+
+const formatPrice = (amount: number) =>
+  new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: 2,
+  }).format(amount);
 
 const sales = [
   {
     name: "Escola do Rock Bakhita",
     label: "Venda Bakhita",
-    price: "R$ 45 por ingresso",
-    message:
-      "Olá! Quero comprar ingressos do espetáculo Escola do Rock pela venda da Escola do Rock Bakhita. Por favor, confirmem a disponibilidade e os detalhes da sessão.",
+    schedule: "Horário a confirmar",
   },
   {
     name: "Escola do Rock Mads Project",
     label: "Venda Mads Project",
-    price: "R$ 45 por ingresso",
-    message:
-      "Olá! Quero comprar ingressos do espetáculo Escola do Rock pela venda da Escola do Rock Mads Project. Por favor, confirmem a disponibilidade e os detalhes da sessão.",
+    schedule: "Horário a confirmar",
   },
 ];
 
 export function IngressosPage() {
   const [copied, setCopied] = useState(false);
+  const [buyerName, setBuyerName] = useState("");
+  const [saleIndex, setSaleIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const total = ticketPrice * quantity;
 
   async function copyPixKey() {
     try {
@@ -41,6 +53,31 @@ export function IngressosPage() {
     } catch {
       setCopied(false);
     }
+  }
+
+  function sendReceiptToWhatsApp(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const sale = sales[saleIndex];
+    const message = [
+      "Olá, Mads Project! Já fiz o Pix dos ingressos do espetáculo Escola do Rock e vou enviar o comprovante.",
+      "",
+      `Responsável: ${buyerName.trim()}`,
+      `Venda: ${sale.name}`,
+      `Data: ${showDate}`,
+      `Horário: ${sale.schedule}`,
+      `Quantidade: ${quantity} ingresso(s)`,
+      `Valor total: ${formatPrice(total)}`,
+      "",
+      "Segue o comprovante de pagamento em anexo.",
+      `Vou retirar os ingressos na escola: ${pickupAddress}`,
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   }
 
   return (
@@ -81,8 +118,8 @@ export function IngressosPage() {
             <span className="mads-gradient-text">Escola do Rock</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-mads-muted sm:text-lg">
-            Escolha por qual venda deseja comprar. Cada equipe atende os pedidos
-            e controla sua própria lista de ingressos.
+            Compre seu ingresso por Pix, envie o comprovante pelo WhatsApp do
+            Mads Project e retire o ingresso na escola.
           </p>
         </section>
 
@@ -113,28 +150,110 @@ export function IngressosPage() {
                 {sale.name}
               </h3>
               <p className="mt-4 text-2xl font-semibold text-mads-accent-soft">
-                {sale.price}
+                {formatPrice(ticketPrice)} por ingresso
               </p>
               <p className="mt-3 flex-1 leading-relaxed text-mads-muted">
-                Consulte a disponibilidade e os detalhes da sessão diretamente
-                com esta equipe. O pagamento dos ingressos é feito somente por
-                Pix.
+                {showDate} · {sale.schedule}. Pagamento somente por Pix. Esta
+                opção identifica a venda que será contabilizada no seu pedido.
               </p>
-              <a
-                href={`https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(sale.message)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mads-cta mt-8 inline-flex min-h-14 items-center justify-center gap-3 rounded-xl px-5 py-4 text-center text-xs font-bold uppercase tracking-[0.13em] text-white transition sm:text-sm"
-              >
-                Falar sobre esta venda
-                <ArrowUpRight size={18} weight="bold" aria-hidden="true" />
-              </a>
             </article>
           ))}
         </section>
 
-        <section className="mx-auto mt-10 max-w-3xl rounded-3xl border border-mads-border bg-mads-surface p-6 sm:p-8">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <section className="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-[1fr_1fr]">
+          <form
+            onSubmit={sendReceiptToWhatsApp}
+            className="rounded-3xl border border-mads-border bg-mads-panel p-6 sm:p-8"
+          >
+            <div className="mb-7">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+                1 · Dados do pedido
+              </p>
+              <h2 className="mt-2 font-serif text-3xl font-semibold">
+                Calcule seu total
+              </h2>
+            </div>
+            <label className="mb-2 block text-sm font-semibold" htmlFor="buyer-name">
+              Nome do responsável
+            </label>
+            <input
+              id="buyer-name"
+              name="buyerName"
+              autoComplete="name"
+              required
+              value={buyerName}
+              onChange={(event) => setBuyerName(event.target.value)}
+              className="mb-5 min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text placeholder:text-mads-faint"
+              placeholder="Nome e sobrenome"
+            />
+
+            <label className="mb-2 block text-sm font-semibold" htmlFor="ticket-sale">
+              Venda dos ingressos
+            </label>
+            <select
+              id="ticket-sale"
+              name="sale"
+              value={saleIndex}
+              onChange={(event) => setSaleIndex(Number(event.target.value))}
+              className="mb-5 min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text"
+            >
+              {sales.map((sale, index) => (
+                <option key={sale.name} value={index}>
+                  {sale.name}
+                </option>
+              ))}
+            </select>
+
+            <label className="mb-2 block text-sm font-semibold" htmlFor="ticket-quantity">
+              Quantidade de ingressos
+            </label>
+            <input
+              id="ticket-quantity"
+              name="quantity"
+              type="number"
+              min={1}
+              step={1}
+              required
+              value={quantity}
+              onChange={(event) =>
+                setQuantity(Math.max(1, Number(event.target.value) || 1))
+              }
+              className="min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text"
+            />
+
+            <div className="mt-6 flex items-center justify-between rounded-2xl bg-mads-accent/10 px-4 py-4">
+              <span className="font-semibold text-mads-muted">Total via Pix</span>
+              <span className="text-2xl font-bold text-mads-accent-soft" aria-live="polite">
+                {formatPrice(total)}
+              </span>
+            </div>
+
+            <button
+              type="submit"
+              className="mads-cta mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-xl px-5 py-4 text-center text-xs font-bold uppercase tracking-[0.13em] text-white transition sm:text-sm"
+            >
+              Já paguei · enviar comprovante
+              <ArrowUpRight size={18} weight="bold" aria-hidden="true" />
+            </button>
+            <p className="mt-3 text-xs leading-relaxed text-mads-faint">
+              O WhatsApp abrirá com os dados do pedido. Anexe o comprovante na
+              conversa antes de enviar a mensagem.
+            </p>
+          </form>
+
+          <div className="flex flex-col gap-5">
+            <section className="rounded-3xl border border-mads-border bg-mads-surface p-6 sm:p-8">
+              <div className="mb-6">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+                  2 · Pagamento
+                </p>
+                <h2 className="mt-2 font-serif text-3xl font-semibold">
+                  Pague com Pix
+                </h2>
+                <p className="mt-2 text-sm text-mads-muted">
+                  Confira o total do pedido e use esta chave Pix CNPJ.
+                </p>
+              </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
                 Chave Pix · CNPJ
@@ -143,9 +262,8 @@ export function IngressosPage() {
                 {pixKey}
               </p>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-mads-muted">
-                Confirme a disponibilidade com a equipe escolhida antes de
-                pagar. Após o Pix, envie o comprovante na mesma conversa para
-                registrar o pedido na venda correta.
+                Após pagar, use o botão do pedido para abrir o WhatsApp do Mads
+                Project e anexe o comprovante para registrar a venda escolhida.
               </p>
             </div>
             <button
@@ -166,13 +284,31 @@ export function IngressosPage() {
                 </>
               )}
             </button>
+            </section>
+
+            <section className="rounded-3xl border border-mads-border bg-mads-surface p-6 sm:p-8">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+                3 · Retirada
+              </p>
+              <h2 className="mt-2 font-serif text-3xl font-semibold">
+                Retire na escola
+              </h2>
+              <p className="mt-3 flex gap-2 text-sm leading-relaxed text-mads-muted">
+                <MapPin size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
+                {pickupAddress}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-mads-muted">
+                A equipe confirmará o pagamento pelo WhatsApp. Os ingressos
+                serão retirados presencialmente na escola.
+              </p>
+            </section>
           </div>
         </section>
 
         <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-mads-faint">
-          As vendas Bakhita e Mads Project são atendidas separadamente. Faça o
-          pagamento somente depois de confirmar a disponibilidade com a equipe
-          responsável pelo seu pedido.
+          As vendas Bakhita e Mads Project são contabilizadas separadamente. O
+          pagamento e a confirmação do comprovante são feitos manualmente pela
+          equipe do Mads Project.
         </p>
       </div>
     </main>

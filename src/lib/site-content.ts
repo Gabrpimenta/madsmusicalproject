@@ -35,7 +35,7 @@ export const site = {
   email: "madsmusicalproject@gmail.com",
   instagram: "https://instagram.com/madsmusicalproject",
   instagramHandle: "@madsmusicalproject",
-  address: "São Paulo, SP - Brasil",
+  address: "Rua Tonelero, 938 - Vila Ipojuca, São Paulo - SP, 05056-001",
   coursesUrl: "/cursos/",
   teachersUrl: "/professores/",
 };
@@ -122,6 +122,7 @@ export const navLinks: Array<{
   { label: "A Escola", href: "/#escola" },
   { label: "Cursos", href: site.coursesUrl },
   { label: "Professores", href: site.teachersUrl },
+  { label: "Ingressos", href: "/ingressos/" },
   { label: "Orientadora", href: "/#orientadora" },
   { label: "Contato", href: "/#contato" },
 ];
@@ -375,18 +376,6 @@ export const teacherProfiles = [
       "Nos palcos, protagonizou e integrou espetáculos como \"Hércules, o Musical\", \"Rent\" e \"Mahabharata\". Como preparador vocal e sonoplasta na A Peste CIA Urbana de Teatro, cria trilhas sonoras inéditas.",
     ],
   },
-  {
-    name: "Victor Lazzari",
-    role: "Teatro",
-    image: withBasePath("/assets/professores/victor-lazzari.jpeg"),
-    imagePosition: "center 28%",
-    specialties: ["Teatro", "Teatro musical", "Corpo"],
-    bio: [
-      "Profissional das artes cênicas, com experiência em teatro, teatro musical, dança e formação artística. Atua na preparação e no desenvolvimento de crianças, adolescentes e adultos, promovendo o aprendizado por meio de uma metodologia que une técnica, criatividade, disciplina e sensibilidade.",
-      "Ao longo de sua trajetória, participou de projetos artísticos, educacionais e culturais, desenvolvendo processos criativos que estimulam a expressão, a comunicação, a confiança e o trabalho em equipe. Acredita que a arte é uma importante ferramenta de transformação, capaz de fortalecer habilidades técnicas, emocionais e sociais, respeitando a individualidade e o potencial de cada aluno.",
-      "Seu trabalho busca proporcionar experiências significativas de aprendizado, incentivando a autonomia, a criatividade e o desenvolvimento artístico em um ambiente acolhedor, colaborativo e inspirador.",
-    ],
-  },
 ];
 
 export const guestTeacherProfiles = [
@@ -449,8 +438,10 @@ export const jsonLd = {
   telephone: site.whatsappDisplay,
   address: {
     "@type": "PostalAddress",
+    streetAddress: "Rua Tonelero, 938 - Vila Ipojuca",
     addressLocality: "São Paulo",
     addressRegion: "SP",
+    postalCode: "05056-001",
     addressCountry: "BR",
   },
   sameAs: [site.instagram],

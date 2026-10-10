@@ -19,6 +19,11 @@ const routes = [
     changeFrequency: "monthly",
     priority: 0.7,
   },
+  {
+    path: "/ingressos/",
+    changeFrequency: "weekly",
+    priority: 0.8,
+  },
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

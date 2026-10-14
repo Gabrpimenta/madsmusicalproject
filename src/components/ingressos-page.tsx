@@ -38,13 +38,13 @@ const sales = [
     id: "bakhita",
     name: "Escola do Rock Bakhita",
     label: "Venda Bakhita",
-    schedule: "Horário a confirmar",
+    schedule: "18h45",
   },
   {
     id: "mads",
     name: "Escola do Rock Mads Project",
     label: "Venda Mads Project",
-    schedule: "Horário a confirmar",
+    schedule: "20h",
   },
 ] as const;
 
@@ -361,7 +361,7 @@ export function IngressosPage() {
             <div className="mt-5 flex gap-3 rounded-xl border border-mads-border p-4">
               <Clock size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
               <p className="text-sm leading-relaxed text-mads-muted">
-                Os horários das apresentações serão divulgados assim que estiverem confirmados.
+                Horário da apresentação: às {sale.schedule}.
               </p>
             </div>
           </form>

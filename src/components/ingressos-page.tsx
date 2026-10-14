@@ -82,15 +82,18 @@ export function IngressosPage() {
     const message = [
       "Olá, Mads Project! Quero consultar a disponibilidade de ingressos para o espetáculo Escola do Rock.",
       "",
-      `Responsável: ${buyerName.trim()}`,
-      `Ingressos para: ${ticketNames.trim()}`,
       `Venda: ${sale.name}`,
       `Data: ${showDate}`,
       `Horário: ${sale.schedule}`,
       `Quantidade desejada: ${quantity} ingresso(s)`,
       `Valor: ${formatPrice(ticketPrice)} por ingresso · Total: ${formatPrice(total)}`,
+      ...(buyerName.trim() ? [`Responsável: ${buyerName.trim()}`] : []),
+      ...(ticketNames.trim() ? [`Ingressos para: ${ticketNames.trim()}`] : []),
       "",
       "Por favor, confirmem as vagas antes de eu realizar o Pix.",
+      ...(!buyerName.trim() || !ticketNames.trim()
+        ? ["Se ainda não informei os nomes, vou passar o nome do responsável e de quem receberá os ingressos por aqui."]
+        : []),
     ].join("\n");
 
     openWhatsApp(message);
@@ -423,12 +426,14 @@ export function IngressosPage() {
               <button
                 type="button"
                 onClick={checkAvailability}
-                disabled={!buyerName.trim() || !ticketNames.trim()}
-                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-mads-border px-4 py-3 text-center text-sm font-bold transition hover:border-mads-accent hover:bg-mads-accent/10 disabled:cursor-not-allowed disabled:opacity-45"
+                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-mads-border px-4 py-3 text-center text-sm font-bold transition hover:border-mads-accent hover:bg-mads-accent/10"
               >
                 <WhatsappLogo size={19} weight="fill" aria-hidden="true" />
                 Consultar disponibilidade antes de pagar
               </button>
+              <p className="mt-2 text-xs leading-relaxed text-mads-faint">
+                Pode consultar sem preencher os nomes; informe-os diretamente na conversa do WhatsApp.
+              </p>
               <p className="mt-2 text-xs leading-relaxed text-mads-faint">
                 A capacidade total do teatro é de 300 pessoas, compartilhada entre as duas vendas. Confirme as vagas antes de pagar.
               </p>

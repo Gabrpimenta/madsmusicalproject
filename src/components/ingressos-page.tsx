@@ -5,65 +5,101 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
+  CalendarBlank,
   Check,
+  Clock,
   Copy,
   MapPin,
+  Minus,
+  Plus,
   Ticket,
+  WhatsappLogo,
 } from "@phosphor-icons/react";
 import { site } from "@/lib/site-content";
 
 const pixKey = "65602923000169";
 const ticketPrice = 45;
 const showDate = "19/11/2026";
-const pickupAddress = site.address;
 const venueAddress =
   "Av. Imperatriz Leopoldina, 550 – Vila Leopoldina, São Paulo – SP";
+const pickupAddress = site.address;
 const venueMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueAddress)}`;
 
 const formatPrice = (amount: number) =>
   new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-    maximumFractionDigits: 2,
   }).format(amount);
 
 const sales = [
   {
+    id: "bakhita",
     name: "Escola do Rock Bakhita",
     label: "Venda Bakhita",
     schedule: "Horário a confirmar",
   },
   {
+    id: "mads",
     name: "Escola do Rock Mads Project",
     label: "Venda Mads Project",
     schedule: "Horário a confirmar",
   },
-];
+] as const;
+
+type CopyState = "idle" | "copied" | "failed";
 
 export function IngressosPage() {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<CopyState>("idle");
   const [buyerName, setBuyerName] = useState("");
-  const [saleIndex, setSaleIndex] = useState(0);
+  const [saleId, setSaleId] = useState<(typeof sales)[number]["id"]>("bakhita");
   const [quantity, setQuantity] = useState(1);
+  const [confirmed, setConfirmed] = useState(false);
 
+  const sale = sales.find((item) => item.id === saleId) ?? sales[0];
   const total = ticketPrice * quantity;
 
   async function copyPixKey() {
     try {
       await navigator.clipboard.writeText(pixKey);
-      setCopied(true);
+      setCopied("copied");
     } catch {
-      setCopied(false);
+      setCopied("failed");
     }
   }
 
-  function sendReceiptToWhatsApp(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function openWhatsApp(message: string) {
+    window.open(
+      `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }
 
-    const sale = sales[saleIndex];
+  function checkAvailability() {
     const message = [
-      "Olá, Mads Project! Já fiz o Pix dos ingressos do espetáculo Escola do Rock e vou enviar o comprovante.",
+      "Olá, Mads Project! Quero consultar a disponibilidade de ingressos para o espetáculo Escola do Rock.",
+      "",
+      `Responsável: ${buyerName.trim()}`,
+      `Venda: ${sale.name}`,
+      `Data: ${showDate}`,
+      `Horário: ${sale.schedule}`,
+      `Quantidade desejada: ${quantity} ingresso(s)`,
+      `Valor: ${formatPrice(ticketPrice)} por ingresso · Total: ${formatPrice(total)}`,
+      "",
+      "Por favor, confirmem as vagas antes de eu realizar o Pix.",
+    ].join("\n");
+
+    openWhatsApp(message);
+  }
+
+  function sendReceipt(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!confirmed) return;
+
+    const message = [
+      "Olá, Mads Project! Já fiz o Pix dos ingressos do espetáculo Escola do Rock.",
       "",
       `Responsável: ${buyerName.trim()}`,
       `Venda: ${sale.name}`,
@@ -72,39 +108,35 @@ export function IngressosPage() {
       `Quantidade: ${quantity} ingresso(s)`,
       `Valor total: ${formatPrice(total)}`,
       "",
-      "Segue o comprovante de pagamento em anexo.",
-      `Vou retirar os ingressos na escola: ${pickupAddress}`,
+      "Vou anexar o comprovante de pagamento nesta conversa.",
+      `Retirada dos ingressos: escola Mads Project, ${pickupAddress}`,
     ].join("\n");
 
-    window.open(
-      `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
+    openWhatsApp(message);
   }
 
   return (
     <main className="public-site relative min-h-screen overflow-hidden bg-mads-bg text-mads-text">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(ellipse_at_top,rgba(123,92,240,.24),transparent_68%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(123,92,240,.23),transparent_68%)]"
       />
 
       <header className="relative z-10 border-b border-mads-border bg-mads-bg/90 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <Link href="/#inicio" aria-label="Mads Project, página inicial">
             <Image
               src={site.logo}
               alt="Mads Project"
-              width={52}
-              height={52}
-              className="h-12 w-12 rounded-xl object-cover"
+              width={48}
+              height={48}
+              className="h-11 w-11 rounded-xl object-cover"
               priority
             />
           </Link>
           <Link
             href="/#inicio"
-            className="inline-flex items-center gap-2 rounded-full border border-mads-border px-4 py-2.5 text-sm font-semibold text-mads-muted transition hover:border-mads-accent hover:text-mads-text"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-mads-border px-4 py-2 text-sm font-semibold text-mads-muted transition hover:border-mads-accent hover:text-mads-text"
           >
             <ArrowLeft size={16} aria-hidden="true" />
             Voltar ao site
@@ -112,102 +144,137 @@ export function IngressosPage() {
         </nav>
       </header>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pt-24">
-        <section className="mx-auto max-w-3xl text-center">
-          <p className="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-mads-accent-soft">
-            Ingressos · pagamento via Pix
-          </p>
-          <h1 className="font-serif text-5xl font-semibold leading-[0.98] sm:text-7xl">
-            <span className="mads-gradient-text">Escola do Rock</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-mads-muted sm:text-lg">
-            Compre seu ingresso por Pix, envie o comprovante pelo WhatsApp do
-            Mads Project e retire o ingresso na escola.
-          </p>
-        </section>
-
-        <section
-          aria-labelledby="vendas-title"
-          className="mt-14 grid gap-5 md:grid-cols-2"
-        >
-          <h2 id="vendas-title" className="sr-only">
-            Escolha uma venda de ingressos
-          </h2>
-          {sales.map((sale, index) => (
-            <article
-              key={sale.name}
-              className="flex flex-col rounded-3xl border border-mads-border bg-mads-panel p-6 shadow-[0_22px_80px_rgba(0,0,0,.16)] sm:p-8"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-mads-accent/15 text-mads-accent-soft">
-                  <Ticket size={25} weight="duotone" aria-hidden="true" />
-                </span>
-                <span className="rounded-full border border-mads-border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-mads-muted">
-                  {sale.label}
-                </span>
-              </div>
-              <p className="mt-8 text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-                Venda 0{index + 1}
-              </p>
-              <h3 className="mt-2 font-serif text-3xl font-semibold leading-tight sm:text-4xl">
-                {sale.name}
-              </h3>
-              <p className="mt-4 text-2xl font-semibold text-mads-accent-soft">
-                {formatPrice(ticketPrice)} por ingresso
-              </p>
-              <p className="mt-3 flex-1 leading-relaxed text-mads-muted">
-                {showDate} · {sale.schedule}. Pagamento somente por Pix. Esta
-                opção identifica a venda que será contabilizada no seu pedido.
-              </p>
-            </article>
-          ))}
-        </section>
-
-        <section
-          aria-labelledby="venue-title"
-          className="mt-5 flex flex-col gap-5 rounded-3xl border border-mads-border bg-mads-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
-        >
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pb-20 pt-12 sm:px-8 sm:pt-16">
+        <section className="grid items-center gap-8 lg:grid-cols-[1fr_.82fr] lg:gap-12">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-              Local do espetáculo
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-mads-accent-soft">
+              Ingressos · Escola do Rock
             </p>
-            <h2 id="venue-title" className="mt-2 font-serif text-2xl font-semibold">
-              19 de novembro de 2026 · Teatro
-            </h2>
-            <p className="mt-2 flex gap-2 text-sm leading-relaxed text-mads-muted">
-              <MapPin size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
-              {venueAddress}
+            <h1 className="max-w-3xl font-serif text-5xl font-semibold leading-[0.98] sm:text-6xl lg:text-7xl">
+              Uma noite de <span className="mads-gradient-text">rock</span>,
+              música e teatro.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-mads-muted sm:text-lg">
+              Garanta seus ingressos pelo Pix. Consulte as vagas pelo WhatsApp,
+              pague depois da confirmação e retire os ingressos na escola.
             </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-mads-border bg-mads-surface px-4 py-2.5 text-sm font-semibold">
+                <CalendarBlank size={17} className="text-mads-accent-soft" aria-hidden="true" />
+                19 de novembro de 2026
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-mads-border bg-mads-surface px-4 py-2.5 text-sm font-semibold">
+                <Ticket size={17} className="text-mads-accent-soft" aria-hidden="true" />
+                {formatPrice(ticketPrice)} por ingresso
+              </span>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-            <span className="rounded-full border border-mads-border px-4 py-2 text-sm font-semibold text-mads-text">
-              Capacidade: 300 lugares
-            </span>
-            <a
-              href={venueMapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-mads-border px-4 py-2 text-sm font-semibold text-mads-muted transition hover:border-mads-accent hover:text-mads-text"
-            >
-              Abrir mapa
-              <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
-            </a>
+
+          <div className="relative overflow-hidden rounded-[2rem] border border-mads-border bg-mads-panel p-7 sm:p-9">
+            <div
+              aria-hidden="true"
+              className="absolute -right-12 -top-16 h-64 w-64 rounded-full bg-fuchsia-500/15 blur-3xl"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-24 -left-8 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl"
+            />
+            <div className="relative">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-mads-accent-soft">
+                Espetáculo musical
+              </p>
+              <p className="mt-6 font-serif text-5xl font-semibold leading-none sm:text-6xl">
+                Escola
+                <br />
+                do Rock
+              </p>
+              <div className="mt-8 flex items-end justify-between gap-4 border-t border-mads-border pt-5">
+                <div>
+                  <p className="text-sm text-mads-muted">No teatro</p>
+                  <p className="mt-1 text-lg font-semibold">Vila Leopoldina</p>
+                </div>
+                <p className="rounded-full bg-mads-accent/15 px-4 py-2 text-sm font-bold text-mads-accent-soft">
+                  300 lugares
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-[1fr_1fr]">
-          <form
-            onSubmit={sendReceiptToWhatsApp}
-            className="rounded-3xl border border-mads-border bg-mads-panel p-6 sm:p-8"
-          >
-            <div className="mb-7">
+        <section aria-labelledby="sales-title" className="mt-14">
+          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-                1 · Dados do pedido
+                1 · Escolha sua venda
               </p>
-              <h2 className="mt-2 font-serif text-3xl font-semibold">
-                Calcule seu total
+              <h2 id="sales-title" className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">
+                Por qual grupo vai comprar?
               </h2>
             </div>
+            <p className="text-sm text-mads-muted">Selecione uma opção para montar o pedido.</p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {sales.map((item) => {
+              const selected = item.id === saleId;
+
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setSaleId(item.id)}
+                  className={`rounded-2xl border p-5 text-left transition sm:p-6 ${
+                    selected
+                      ? "border-mads-accent bg-mads-accent/10 shadow-[0_12px_38px_rgba(123,92,240,.12)]"
+                      : "border-mads-border bg-mads-panel hover:border-mads-accent/60"
+                  }`}
+                >
+                  <span className="flex items-start justify-between gap-4">
+                    <span>
+                      <span className="block text-xs font-bold uppercase tracking-[0.16em] text-mads-accent-soft">
+                        {item.label}
+                      </span>
+                      <span className="mt-2 block font-serif text-2xl font-semibold">
+                        {item.name}
+                      </span>
+                      <span className="mt-2 block text-sm text-mads-muted">
+                        {formatPrice(ticketPrice)} por ingresso · {item.schedule}
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                        selected
+                          ? "border-mads-accent bg-mads-accent text-white"
+                          : "border-mads-border text-transparent"
+                      }`}
+                    >
+                      <Check size={14} weight="bold" />
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="mt-10 grid items-start gap-5 lg:grid-cols-[1.05fr_.95fr]">
+          <form
+            id="receipt-form"
+            onSubmit={sendReceipt}
+            className="rounded-3xl border border-mads-border bg-mads-panel p-5 sm:p-7"
+          >
+            <div className="mb-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+                2 · Monte seu pedido
+              </p>
+              <h2 className="mt-2 font-serif text-3xl font-semibold">
+                Seus ingressos
+              </h2>
+              <p className="mt-1 text-sm text-mads-muted">Venda: {sale.name}</p>
+            </div>
+
             <label className="mb-2 block text-sm font-semibold" htmlFor="buyer-name">
               Nome do responsável
             </label>
@@ -218,134 +285,201 @@ export function IngressosPage() {
               required
               value={buyerName}
               onChange={(event) => setBuyerName(event.target.value)}
-              className="mb-5 min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text placeholder:text-mads-faint"
+              className="min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text placeholder:text-mads-faint focus:border-mads-accent focus:outline-none"
               placeholder="Nome e sobrenome"
             />
 
-            <label className="mb-2 block text-sm font-semibold" htmlFor="ticket-sale">
-              Venda dos ingressos
-            </label>
-            <select
-              id="ticket-sale"
-              name="sale"
-              value={saleIndex}
-              onChange={(event) => setSaleIndex(Number(event.target.value))}
-              className="mb-5 min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text"
-            >
-              {sales.map((sale, index) => (
-                <option key={sale.name} value={index}>
-                  {sale.name}
-                </option>
-              ))}
-            </select>
-
-            <label className="mb-2 block text-sm font-semibold" htmlFor="ticket-quantity">
-              Quantidade de ingressos
-            </label>
-            <input
-              id="ticket-quantity"
-              name="quantity"
-              type="number"
-              min={1}
-              step={1}
-              required
-              value={quantity}
-              onChange={(event) =>
-                setQuantity(Math.max(1, Number(event.target.value) || 1))
-              }
-              className="min-h-12 w-full rounded-xl border border-mads-border bg-mads-bg px-4 py-3 text-mads-text"
-            />
-
-            <div className="mt-6 flex items-center justify-between rounded-2xl bg-mads-accent/10 px-4 py-4">
-              <span className="font-semibold text-mads-muted">Total via Pix</span>
-              <span className="text-2xl font-bold text-mads-accent-soft" aria-live="polite">
-                {formatPrice(total)}
-              </span>
+            <div className="mt-6 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold">Quantidade</p>
+                <p className="mt-1 text-xs text-mads-muted">
+                  {formatPrice(ticketPrice)} cada
+                </p>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl border border-mads-border bg-mads-bg p-1.5">
+                <button
+                  type="button"
+                  aria-label="Diminuir quantidade"
+                  disabled={quantity <= 1}
+                  onClick={() => setQuantity((current) => Math.max(1, current - 1))}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-mads-muted transition hover:bg-mads-surface hover:text-mads-text disabled:opacity-35"
+                >
+                  <Minus size={18} weight="bold" aria-hidden="true" />
+                </button>
+                <output
+                  className="min-w-8 text-center text-lg font-bold"
+                  aria-live="polite"
+                  aria-label={`${quantity} ingressos`}
+                >
+                  {quantity}
+                </output>
+                <button
+                  type="button"
+                  aria-label="Aumentar quantidade"
+                  disabled={quantity >= 300}
+                  onClick={() => setQuantity((current) => Math.min(300, current + 1))}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-mads-muted transition hover:bg-mads-surface hover:text-mads-text disabled:opacity-35"
+                >
+                  <Plus size={18} weight="bold" aria-hidden="true" />
+                </button>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              className="mads-cta mt-6 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-xl px-5 py-4 text-center text-xs font-bold uppercase tracking-[0.13em] text-white transition sm:text-sm"
-            >
-              Já paguei · enviar comprovante
-              <ArrowUpRight size={18} weight="bold" aria-hidden="true" />
-            </button>
-            <p className="mt-3 text-xs leading-relaxed text-mads-faint">
-              O WhatsApp abrirá com os dados do pedido. Anexe o comprovante na
-              conversa antes de enviar a mensagem.
-            </p>
+            <div className="mt-6 rounded-2xl bg-mads-accent/10 p-4 sm:p-5">
+              <div className="flex items-center justify-between gap-4 text-sm text-mads-muted">
+                <span>{quantity} × {formatPrice(ticketPrice)}</span>
+                <span>{formatPrice(total)}</span>
+              </div>
+              <div className="mt-4 flex items-end justify-between gap-4 border-t border-mads-border pt-4">
+                <span className="font-semibold">Total do Pix</span>
+                <span className="text-3xl font-bold text-mads-accent-soft" aria-live="polite">
+                  {formatPrice(total)}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-5 flex gap-3 rounded-xl border border-mads-border p-4">
+              <Clock size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
+              <p className="text-sm leading-relaxed text-mads-muted">
+                Os horários das apresentações serão divulgados assim que estiverem confirmados.
+              </p>
+            </div>
           </form>
 
           <div className="flex flex-col gap-5">
-            <section className="rounded-3xl border border-mads-border bg-mads-surface p-6 sm:p-8">
-              <div className="mb-6">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-                  2 · Pagamento
-                </p>
-                <h2 className="mt-2 font-serif text-3xl font-semibold">
-                  Pague com Pix
-                </h2>
-                <p className="mt-2 text-sm text-mads-muted">
-                  Confira o total do pedido e use esta chave Pix CNPJ.
-                </p>
-              </div>
-            <div>
+            <section className="rounded-3xl border border-mads-border bg-mads-panel p-5 sm:p-7">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-                Chave Pix · CNPJ
+                3 · Pague com Pix
               </p>
-              <p className="mt-2 select-all font-mono text-xl font-semibold tracking-wide sm:text-2xl">
-                {pixKey}
+              <h2 className="mt-2 font-serif text-3xl font-semibold">Use a chave Pix</h2>
+              <p className="mt-2 text-sm leading-relaxed text-mads-muted">
+                No aplicativo do seu banco, escolha Pix por CNPJ e confira o total do pedido.
               </p>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-mads-muted">
-                Após pagar, use o botão do pedido para abrir o WhatsApp do Mads
-                Project e anexe o comprovante para registrar a venda escolhida.
+
+              <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-mads-border bg-mads-bg p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-mads-muted">
+                    Chave Pix · CNPJ
+                  </p>
+                  <p className="mt-1 select-all font-mono text-xl font-semibold tracking-wide">
+                    {pixKey}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={copyPixKey}
+                  className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-mads-border px-4 py-2.5 text-sm font-bold transition hover:border-mads-accent hover:bg-mads-accent/10"
+                  aria-live="polite"
+                >
+                  {copied === "copied" ? (
+                    <>
+                      <Check size={17} weight="bold" aria-hidden="true" />
+                      Copiada
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={17} weight="bold" aria-hidden="true" />
+                      Copiar chave
+                    </>
+                  )}
+                </button>
+              </div>
+              {copied === "failed" ? (
+                <p role="status" className="mt-2 text-sm text-mads-accent-soft">
+                  Não foi possível copiar automaticamente. Selecione a chave acima e copie.
+                </p>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={checkAvailability}
+                disabled={!buyerName.trim()}
+                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-mads-border px-4 py-3 text-center text-sm font-bold transition hover:border-mads-accent hover:bg-mads-accent/10 disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                <WhatsappLogo size={19} weight="fill" aria-hidden="true" />
+                Consultar disponibilidade antes de pagar
+              </button>
+              <p className="mt-2 text-xs leading-relaxed text-mads-faint">
+                A capacidade total do teatro é de 300 pessoas. Confirme as vagas com a equipe antes do Pix.
               </p>
-            </div>
-            <button
-              type="button"
-              onClick={copyPixKey}
-              className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl border border-mads-border px-5 py-3 text-sm font-bold text-mads-text transition hover:border-mads-accent hover:bg-mads-accent/10"
-              aria-live="polite"
-            >
-              {copied ? (
-                <>
-                  <Check size={18} weight="bold" aria-hidden="true" />
-                  Chave copiada
-                </>
-              ) : (
-                <>
-                  <Copy size={18} weight="bold" aria-hidden="true" />
-                  Copiar chave Pix
-                </>
-              )}
-            </button>
+
+              <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-mads-border p-4 text-sm leading-relaxed">
+                <input
+                  type="checkbox"
+                  checked={confirmed}
+                  onChange={(event) => setConfirmed(event.target.checked)}
+                  className="mt-1 h-4 w-4 accent-violet-500"
+                />
+                <span>Confirmei as vagas com a equipe e já paguei o total acima.</span>
+              </label>
+              <button
+                type="submit"
+                form="receipt-form"
+                disabled={!confirmed || !buyerName.trim()}
+                className="mads-cta mt-4 inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-xl px-5 py-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-white transition sm:text-sm disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                Enviar comprovante pelo WhatsApp
+                <ArrowRight size={18} weight="bold" aria-hidden="true" />
+              </button>
+              <p className="mt-3 text-xs leading-relaxed text-mads-faint">
+                O WhatsApp abre com o resumo do pedido. Anexe o comprovante na conversa e envie a mensagem.
+              </p>
             </section>
 
-            <section className="rounded-3xl border border-mads-border bg-mads-surface p-6 sm:p-8">
+            <section className="rounded-3xl border border-mads-border bg-mads-surface p-5 sm:p-7">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
-                3 · Retirada
+                4 · Retire os ingressos
               </p>
-              <h2 className="mt-2 font-serif text-3xl font-semibold">
-                Retire na escola
-              </h2>
+              <h2 className="mt-2 font-serif text-2xl font-semibold">Na escola Mads Project</h2>
               <p className="mt-3 flex gap-2 text-sm leading-relaxed text-mads-muted">
-                <MapPin size={20} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
+                <MapPin size={19} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
                 {pickupAddress}
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-mads-muted">
-                A equipe confirmará o pagamento pelo WhatsApp. Os ingressos
-                serão retirados presencialmente na escola.
+              <p className="mt-2 text-xs leading-relaxed text-mads-faint">
+                A equipe confirma o pagamento pelo WhatsApp; os ingressos são retirados presencialmente.
               </p>
             </section>
           </div>
         </section>
 
-        <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-mads-faint">
-          As vendas Bakhita e Mads Project são contabilizadas separadamente. O
-          pagamento e a confirmação do comprovante são feitos manualmente pela
-          equipe do Mads Project.
+        <section className="mt-10 grid gap-4 md:grid-cols-2">
+          <article className="rounded-2xl border border-mads-border bg-mads-surface p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+              Local do espetáculo
+            </p>
+            <p className="mt-2 font-semibold">Teatro · 19 de novembro de 2026</p>
+            <p className="mt-2 flex gap-2 text-sm leading-relaxed text-mads-muted">
+              <MapPin size={19} className="mt-0.5 shrink-0 text-mads-accent-soft" aria-hidden="true" />
+              {venueAddress}
+            </p>
+            <a
+              href={venueMapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-mads-accent-soft hover:text-mads-text"
+            >
+              Abrir mapa
+              <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
+            </a>
+          </article>
+          <article className="rounded-2xl border border-mads-border bg-mads-surface p-5">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-mads-accent-soft">
+              Como funciona
+            </p>
+            <ol className="mt-3 space-y-2 text-sm leading-relaxed text-mads-muted">
+              <li>1. Selecione Bakhita ou Mads Project e a quantidade.</li>
+              <li>2. Consulte as vagas pelo WhatsApp antes de pagar.</li>
+              <li>3. Faça o Pix e envie o comprovante pelo WhatsApp.</li>
+              <li>4. Retire os ingressos na escola.</li>
+            </ol>
+          </article>
+        </section>
+
+        <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-relaxed text-mads-faint">
+          As vendas Bakhita e Mads Project são contabilizadas separadamente e compartilham a capacidade total do teatro. A disponibilidade é confirmada pela equipe no WhatsApp.
         </p>
       </div>
+
     </main>
   );
 }

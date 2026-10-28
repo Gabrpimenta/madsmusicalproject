@@ -38,13 +38,13 @@ const sales = [
     id: "bakhita",
     name: "Escola do Rock Bakhita",
     label: "Venda Bakhita",
-    schedule: "18h45",
+    schedule: "19h10",
   },
   {
     id: "mads",
     name: "Escola do Rock Mads Project",
     label: "Venda Mads Project",
-    schedule: "20h",
+    schedule: "20h20",
   },
 ] as const;
 

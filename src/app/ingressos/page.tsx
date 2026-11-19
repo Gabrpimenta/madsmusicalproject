@@ -5,14 +5,14 @@ import { site } from "@/lib/site-content";
 export const metadata: Metadata = {
   title: `Ingressos | Escola do Rock | ${site.name}`,
   description:
-    "Informações para comprar ingressos do espetáculo Escola do Rock. Vendas separadas para Bakhita e Mads Project, com pagamento via Pix.",
+    "As compras de ingresso para o espetáculo Escola do Rock são feitas somente presencialmente no Teatro UNICID.",
   alternates: {
     canonical: `${site.url}/ingressos/`,
   },
   openGraph: {
     title: `Ingressos | Escola do Rock | ${site.name}`,
     description:
-      "Escolha a venda Bakhita ou Mads Project e consulte a equipe para comprar seu ingresso via Pix.",
+      "As vendas pelo site estão encerradas. Compre seu ingresso presencialmente no Teatro UNICID.",
     url: `${site.url}/ingressos/`,
     siteName: site.name,
     locale: "pt_BR",
